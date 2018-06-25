@@ -1,0 +1,228 @@
+// main scss
+@import "common";
+// @import "~bootstrap/scss/bootstrap";
+// @import "../bootstrap/buttons";
+// @import "../bootstrap/utilities";
+// @import "../bootstrap/grid";
+.size-1 {
+  font-size: $size-1;
+}
+
+.size-2 {
+  font-size: $size-2;
+}
+
+.size-3 {
+  font-size: $size-3;
+}
+
+.size-4 {
+  font-size: $size-4;
+}
+
+textarea {
+  vertical-align: top;
+  resize: none;
+  display: block;
+  max-width: 100%;
+}
+
+a,
+a:active,
+a:focus,
+a:hover,
+a:visited {
+  text-decoration: none;
+  color: $body-color;
+}
+
+.bg-none {
+  background: none;
+}
+
+.bordered {
+  @include bordered($border-color);
+}
+
+.bordered-b-0 {
+  @include bordered($border-color, b);
+}
+
+.bordered-b-1 {
+  @include bordered($blue, b, 2px);
+}
+
+.bordered-r-0 {
+  @include bordered($border-color, r);
+}
+
+.bordered-t-0 {
+  @include bordered($border-color, t);
+}
+
+.bordered-transparent {
+  @include bordered(transparent);
+}
+
+
+.gutter {
+  padding-left: $grid-gutter-width/2;
+  padding-right: $grid-gutter-width/2;
+}
+
+.collapse-borders {
+  margin-right: -1px;
+  margin-bottom: -1px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.checkbox-1 {
+  padding-left: 0;
+  margin: 0 0.25rem;
+  cursor: pointer;
+
+  > input {
+    &[type=checkbox],
+    &[type=radio] {
+      display: none;
+    }
+
+    &[type=checkbox] + i::before {
+      content: "\e6af";
+      color: $gray-600;
+    }
+
+    &[type=checkbox]:checked + i::before {
+      content: "\e63d";
+      color: $yellow;
+    }
+  }
+}
+
+[class*=icon-] {
+  line-height: 1;
+}
+
+[class*=icon-]::before {
+  font-size: $size-1;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.step {
+  padding-top: 3rem;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    color: $white;
+
+    li {
+      flex: 1;
+      text-align: center;
+      font-size: 0.75rem;
+      position: relative;
+      z-index: 1;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        top: 1rem;
+        display: block;
+        @include bordered($white, b, 2px);
+        z-index: -1;
+      }
+
+      &:first-of-type::before {
+        transform: scaleX(0.5);
+        transform-origin: right;
+      }
+
+      &:last-of-type::before {
+        transform: scaleX(0.5);
+        transform-origin: left;
+      }
+
+      div {
+        padding-top: 0.5rem;
+      }
+
+      span {
+        display: inline-block;
+        font-size: 1rem;
+        width: 2rem;
+        height: 2rem;
+        line-height: 2rem;
+        text-align: center;
+        @include border-radius(50%);
+        background-color: $white;
+        color: $warning;
+      }
+
+      &.active span {
+        background-color: $primary;
+        color: $white;
+      }
+    }
+  }
+}
+
+.container,
+button,
+view,
+view,
+i,
+.iconfont {
+  box-sizing: border-box;
+
+  &::after {
+    box-sizing: border-box;
+  }
+
+  &::before {
+    box-sizing: border-box;
+  }
+}
+button::after {
+  border: none;
+}
+.caret {
+  @include caret;
+  &::after {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+.avatar {
+  @include border-radius(50%);
+  overflow: hidden;
+  width: 120rpx;
+  height: 120rpx;
+  &.avatar-sm {
+      width: 80rpx;
+      height: 80rpx;
+  }
+  &.avatar-md {
+      width: 120rpx;
+      height: 120rpx;
+  }
+  &.avatar-lg {
+      width: 160rpx;
+      height: 160rpx;
+  }
+}
+.img-icon {
+  image {
+    width: 32rpx;
+    margin-right: 12rpx;
+  }
+}
+page {
+    background-color: $primary;
+    min-height:100vh;
+}
