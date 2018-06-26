@@ -1,0 +1,34 @@
+
+
+// Required
+@import "../daemonite-material/colors";
+$grid-gutter-width: 30px;
+$btn-font-size: 16px;
+$border-radius: 3px;
+$yiq-contrasted-threshold: 185;
+$stepper-text-color: #ffffff;
+$primary: (
+  color: #acc192,
+  dark:  #7a9d55,
+  light: #a7b498
+);
+
+$secondary: (
+  color: $material-color-teal-a200,
+  dark:  $material-color-teal-a400,
+  light: $material-color-teal-a100
+);
+@import "../daemonite-material/functions";
+@import "../daemonite-material/mixins";
+@import "../daemonite-material/variables";
+
+
+
+// Optional
+@import "../daemonite-material/base/base";
+@import "../daemonite-material/base/grid";
+// @import "../daemonite-material/base/typography";
+@import "../daemonite-material/material/button";
+// @import "../daemonite-material/material/card";
+// @import "../daemonite-material/material/text-field";
+@import "../daemonite-material/material/stepper";

@@ -14,6 +14,7 @@
     "chalk": "^2.4.1",
     "color-convert": "^1.9.2",
     "concat-map": "^0.0.1",
+    "daemonite-material": "^4.1.1",
     "emojis-list": "^2.1.0",
     "flyio": "^0.5.9",
     "fs.realpath": "^1.0.0",
@@ -25,8 +26,7 @@
     "sass-loader": "^7.0.3",
     "source-list-map": "^2.0.0",
     "stackframe": "^1.0.4",
-    "vuex": "^3.0.1",
-    "xmlstring2json": "^0.1.9"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",

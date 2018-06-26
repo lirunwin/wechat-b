@@ -1,0 +1,71 @@
+.step {
+  padding-top: 3em;
+  font-size: 14px;
+  color: $stepper-text-color;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+
+    li {
+      text-align: center;
+      font-size: 1em;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      color: $stepper-text-color;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        top: 1em;
+        display: block;
+        border-bottom: 2px #ffffff solid;
+        z-index: -1;
+      }
+
+      &:first-of-type {
+        flex: 0 0 4em;
+
+        &::before {
+          transform: scaleX(0.5);
+          transform-origin: right;
+        }
+      }
+
+      &:last-of-type {
+        flex: 0 0 4em;
+
+        &::before {
+          transform: scaleX(0.5);
+          transform-origin: left;
+        }
+      }
+
+      div {
+        padding-top: 0.5em;
+        font-size: 12px;
+      }
+
+      span {
+        display: inline-block;
+        width: 2em;
+        height: 2em;
+        line-height: 2em;
+        text-align: center;
+        border-radius: 50%;
+        background-color: map-get($primary,color);
+        border: $stepper-text-color 1px solid;
+        color: $stepper-text-color;
+      }
+
+      &.active span {
+        background-color: $stepper-text-color;
+        color: map-get($primary,color);
+      }
+    }
+  }
+}

@@ -19,10 +19,17 @@ export default {
       '^pages/user/signup',
     ], // Will be filled in webpack
     window: {
+      // backgroundTextStyle: 'light',
+      // navigationBarBackgroundColor: '#acc192',
+      // navigationBarTitleText: '懒虫动动兼职平台',
+      // navigationBarTextStyle: 'white',
+
+
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#acc192',
+      navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '懒虫动动兼职平台',
-      navigationBarTextStyle: 'white',
+      navigationBarTextStyle: 'black',
+
       // backgroundTextStyle: 'light',
       // backgroundColor: '#d22222',
       // backgroundColorTop: '#d22222',
