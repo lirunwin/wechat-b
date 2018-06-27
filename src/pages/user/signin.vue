@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="signin">
+  <div class="signin">signin
   </div>
 </template>
 

@@ -7,8 +7,7 @@
     list-style: none;
     padding: 0;
     display: flex;
-    justify-content: space-between;
-
+    justify-content:space-between;
     li {
       text-align: center;
       font-size: 1em;
@@ -16,7 +15,6 @@
       z-index: 1;
       flex: 1;
       color: $stepper-text-color;
-
       &::before {
         content: '';
         position: absolute;
@@ -26,19 +24,16 @@
         border-bottom: 2px #ffffff solid;
         z-index: -1;
       }
-
       &:first-of-type {
-        flex: 0 0 4em;
-
+      flex: 0 0 4em;
         &::before {
           transform: scaleX(0.5);
           transform-origin: right;
         }
       }
-
       &:last-of-type {
-        flex: 0 0 4em;
 
+        flex: 0 0 4em;
         &::before {
           transform: scaleX(0.5);
           transform-origin: left;

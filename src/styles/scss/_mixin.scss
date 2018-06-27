@@ -91,12 +91,12 @@
   /* Handle */
   &::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: rgba(map-get($theme-colors, 'primary'), 0.8);
+    background: rgba(map-get($primary, 'color'), 0.8);
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
   }
 
   &::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(map-get($theme-colors, 'primary'), 0.4);
+    background: rgba(map-get($primary, 'color'), 0.4);
   }
 }
 @mixin top-right-btn ($right:0,$size:1.5rem,$padding:0.25rem,$hover-background-color:transparent) {
@@ -189,5 +189,71 @@
   }
   &:first-of-type::before {
     border-left-color: transparent;
+  }
+}
+
+@mixin caret-down {
+  border-top: $caret-width solid;
+  border-right: $caret-width solid transparent;
+  border-bottom: 0;
+  border-left: $caret-width solid transparent;
+}
+
+@mixin caret-up {
+  border-top: 0;
+  border-right: $caret-width solid transparent;
+  border-bottom: $caret-width solid;
+  border-left: $caret-width solid transparent;
+}
+
+@mixin caret-right {
+  border-top: $caret-width solid transparent;
+  border-bottom: $caret-width solid transparent;
+  border-left: $caret-width solid;
+}
+
+@mixin caret-left {
+  border-top: $caret-width solid transparent;
+  border-right: $caret-width solid;
+  border-bottom: $caret-width solid transparent;
+}
+
+@mixin caret($direction: down) {
+  @if $enable-caret {
+    &::after {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      margin-left: $caret-width * .85;
+      vertical-align: $caret-width * .85;
+      content: "";
+      @if $direction == down {
+        @include caret-down;
+      } @else if $direction == up {
+        @include caret-up;
+      } @else if $direction == right {
+        @include caret-right;
+      }
+    }
+
+    @if $direction == left {
+      &::after {
+        display: none;
+      }
+
+      &::before {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-right: $caret-width * .85;
+        vertical-align: $caret-width * .85;
+        content: "";
+        @include caret-left;
+      }
+    }
+
+    &:empty::after {
+      margin-left: 0;
+    }
   }
 }

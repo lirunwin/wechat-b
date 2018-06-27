@@ -1,7 +1,30 @@
-@import "custom-bootstrap";
+@import "../daemonite-material/colors";
 $size-1: 12px;
 $size-2: 14px;
 $size-3: 16px;
 $size-4: 18px;
 $size-4: 20px;
-$panel-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+$enable-caret: true;
+$caret-width:.3em;
+$rem: 16px; // daemonite-material
+$grid-gutter-width: 30px;
+$btn-font-size: 16px;
+$btn-height: 2.75 * $rem;
+$btn-height-lg: 3.25 * $rem;
+$btn-height-sm: 2.25 * $rem;
+$border-radius: 3px;
+$yiq-contrasted-threshold: 185;
+$stepper-text-color: #ffffff;
+$primary: (
+  color: #acc192,
+  dark: #7a9d55,
+  light: #a7b498
+);
+$secondary: (
+  color: $material-color-teal-a200,
+  dark: $material-color-teal-a400,
+  light: $material-color-teal-a100
+);
+@import "../daemonite-material/functions";
+@import "../daemonite-material/mixins";
+@import "../daemonite-material/variables";

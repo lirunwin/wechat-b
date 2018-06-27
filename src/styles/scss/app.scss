@@ -1,11 +1,24 @@
 // main scss
-@import "daemonite-material";
+@import 'materialize';
+@import "common";
 @import "stepper";
-
 button::after {
   border: none;
 }
 
 Page {
   background-color: map-get($primary,color);
+  box-sizing: border-box;
+}
+view,text,label {
+  box-sizing: border-box;
+  &::before {
+    box-sizing: border-box;
+  }
+  &::after {
+    box-sizing: border-box;
+  }
+}
+.transition {
+  transition: all 0.3s ease;
 }
