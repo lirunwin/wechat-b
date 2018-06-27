@@ -68,7 +68,7 @@
               </div>
               <div class="col-12 mb-1">
                 <h5>营业执照(必须上传)</h5>
-                <input-box v-model="user.rePassword" placeholder="确认密码" tyep="password" maxlength="30"></input-box>
+                <image-uploader></image-uploader>
               </div>
               <div class="col-12 mb-1">
                 <h5>公司简介</h5>
@@ -87,14 +87,14 @@
 
 <script>
 import InputBox from '@/components/InputBox';
-import Divider from '@/components/Divider';
 import Selector from '@/components/Selector';
+import ImageUploader from '@/components/ImageUploader';
 
 export default {
   components: {
     InputBox,
-    Divider,
-    Selector
+    Selector,
+    ImageUploader
   },
   data: () => ({
     step: 2,
@@ -109,7 +109,7 @@ export default {
   }),
   methods: {
     onSubmit() {
-
+      console.log(1);
     }
   }
 }

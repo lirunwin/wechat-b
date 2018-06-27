@@ -35,4 +35,4 @@ module.exports = [
       navigationBarTitleText: '账户信息'
     }
   }
-]
+];
