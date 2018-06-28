@@ -21,9 +21,9 @@ $primary: (
   light: #a7b498
 );
 $secondary: (
-  color: $material-color-teal-a200,
-  dark: $material-color-teal-a400,
-  light: $material-color-teal-a100
+  color: #f9f9f9,
+  dark: #edf1e8,
+  light: #fcfcfc
 );
 @import "../daemonite-material/functions";
 @import "../daemonite-material/mixins";

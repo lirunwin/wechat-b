@@ -34,5 +34,12 @@ module.exports = [
     config: {
       navigationBarTitleText: '账户信息'
     }
+  },
+  {
+    path: '/pages/recruitment/post',
+    name: 'PostRecuitmentInfo',
+    config: {
+      navigationBarTitleText: '发布招聘信息'
+    }
   }
 ];

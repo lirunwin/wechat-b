@@ -1,18 +1,13 @@
-import Vue from 'vue';
 import Vuex from 'vuex';
-// import { formatSlideList, formatNewsList, formatTopicList } from '@/utils';
-// import api from '@/utils/api';
+import Vue from 'vue';
+import Recruitment from './modules/Recruitment';
+import Common from './modules/Common';
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-
-  },
+export default new Vuex.Store({
+  modules: {
+    Recruitment,
+    Common
+  }
 });
-
-export default store;

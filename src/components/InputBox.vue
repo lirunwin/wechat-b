@@ -1,18 +1,18 @@
 <template lang="html">
-  <label class="row align-items-center _input-label">
-    <div class="col">
+  <div class="row align-items-center _input-label">
+    <label class="col pl-1">
       <input :type="type"
         :placeholder="placeholder"
         :maxlength="maxlength"
-        v-bind="$attrs"
         :value="value"
         @change="updataVal($event.target.value)"
       >
-    </div>
+      <text v-if="unit" class="unit p-1">{{unit}}</text>
+    </label>
     <div class="col-auto smsCode btn btn-outline-primary shadow-none align-self-stretch d-flex align-items-center justify-content-center" v-if="sms">
       <span>获取验证码</span>
     </div>
-  </label>
+  </div>
 </template>
 
 <script>
@@ -28,7 +28,11 @@ export default {
     },
     value: [String, Number],
     sms: [String, Boolean],
-    maxlength: String
+    maxlength: {
+      type: [String, Number],
+      default: 100
+    },
+    unit: String
   },
   methods: {
     updataVal(val) {
@@ -42,17 +46,26 @@ export default {
 @import '~@/styles/scss/variables';
 ._input-label {
     border: 1px map-get($primary,color) solid;
+    background: map-get($secondary,color);
     border-radius: $border-radius;
     font-size: 16px;
+    position: relative;
     .label-text {
         font-weight: 600;
     }
     input {
-        padding: 8px 0;
+        padding: 8px 2em 8px 0;
     }
     .smsCode {
         font-size: 14px;
         padding: 0;
+    }
+    .unit {
+        position: absolute;
+        top: 0;
+        right: 0;
+        line-height: 1;
+        color: $material-color-grey-600;
     }
 }
 </style>

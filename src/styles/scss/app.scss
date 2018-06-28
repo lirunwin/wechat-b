@@ -10,7 +10,7 @@ Page {
   background-color: map-get($primary,color);
   box-sizing: border-box;
 }
-view,text,label {
+view,text,label,textarea {
   box-sizing: border-box;
   &::before {
     box-sizing: border-box;
@@ -18,4 +18,13 @@ view,text,label {
   &::after {
     box-sizing: border-box;
   }
+}
+textarea {
+  vertical-align: top;
+  border: 1px map-get($primary,color) solid;
+  background-color: map-get($secondary,color);
+  border-radius: $border-radius;
+  padding: 0.5em;
+  font-size: 16px;
+  width: 100%;
 }

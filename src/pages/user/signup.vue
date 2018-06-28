@@ -60,7 +60,7 @@
               </div>
               <div class="col-12 mb-1">
                 <h5>公司电话</h5>
-                <input-box v-model="user.rePassword" placeholder="确认密码" tyep="password" maxlength="30"></input-box>
+                <input-box v-model="user.rePassword" placeholder="确认密码" type="password" maxlength="30"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>公司地址</h5>

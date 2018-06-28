@@ -26,17 +26,19 @@ export default {
   methods: {
     chooseFile() {
       promiseWX.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      }).then(res => {
-        console.log(res);
-        this.bgImg = res.tempFilePaths[0];
-        this.loading = true;
-        return res;
-      }).then(res => promiseWX.previewImage({
-        urls: res.tempFilePaths
-      }))
+          count: 1,
+          sizeType: ['original', 'compressed'],
+          sourceType: ['album', 'camera'],
+        })
+        .then(res => {
+          console.log(res);
+          this.bgImg = res.tempFilePaths[0];
+          this.loading = true;
+          return res;
+        })
+        .then(res => promiseWX.previewImage({
+          urls: res.tempFilePaths
+        }))
     },
     // onFilePicked(event) {
     //   this.loading = true;
