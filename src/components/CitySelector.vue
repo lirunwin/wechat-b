@@ -1,30 +1,34 @@
 <template lang="html">
-  <div fluid grid-list-lg class="py-0">
-    <div  wrap class="py-0 row">
-      <div class="col-3 text-truncate">
-        <selector
-          :items="province"
-          v-model="location.province"
-          placeholder="省"
-          hide-details
-          @input="onProvinceChange"
-        ></selector>
-      </div>
-      <div class="col-3 text-truncate" v-if="disableCity === undefined">
+  <div class="row">
+    <div class="col-4">
+        <div class="pr-1">
+          <selector
+            :items="province"
+            v-model="location.province"
+            placeholder="省"
+            label="areaName"
+            @input="onProvinceChange"
+          ></selector>
+        </div>
+    </div>
+    <div class="col-4" v-if="disableCity === undefined">
+      <div>
         <selector
           :items="city"
           v-model="location.city"
           placeholder="市"
-          item-text="areaname"
+          label="areaName"
           @input="onCityChange"
         ></selector>
       </div>
-      <div class="col-3 text-truncate" v-if="disableCity === undefined && disableCounty === undefined">
+    </div>
+    <div class="col-4" v-if="disableCity === undefined && disableCounty === undefined">
+      <div class="pl-1">
         <selector
           :items="county"
           v-model="location.county"
           placeholder="区县"
-          item-text="areaname"
+          label="areaName"
           @input="onCountyChange"
           ></selector>
       </div>
@@ -33,12 +37,13 @@
 </template>
 
 <script>
-import {
-  mapGetters,
-  mapActions
-} from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
+import Selector from '@/components/Selector';
 export default {
   name: 'CitySelector',
+  components: {
+    Selector
+  },
   props: ['value', 'disableCity', 'disableCounty'],
   data: () => ({
     items: [],
@@ -58,42 +63,39 @@ export default {
   },
   methods: {
     ...mapActions(['getCities']),
-    getCity(id) {
-      if (!this.isCityLoading) {
-        this.isCityLoading = true;
-        this.getCities({ id })
-          .then(() => this.isCityLoading = false);
-      }
+    getCity(pid) {
+      this.getCities({ pid })
     },
-    getCounty(id) {
-      if (!this.isCountyLoading) {
-        this.isCountyLoading = true;
-        this.getCities({ id })
-          .then(() => this.isCountyLoading = false);
-      }
+    getCounty(pid) {
+      this.getCities({ pid })
     },
-    onProvinceChange(id) {
+    onProvinceChange(index) {
       if (this.disableCity === undefined) {
-        this.onChange();
+        let id = this.province[index].id;
+        this.location.province = id;
         this.location.city = '0';
         this.location.county = '0';
+        this.onChange();
         let city = this.cities.filter(item => item.pid === id);
         if (city.length === 0) {
-          this.getCity(id)
+          this.getCity(id);
         }
       }
     },
-    onCityChange(id) {
-      this.onChange();
+    onCityChange(index) {
       if (this.disableCounty === undefined) {
+        let id = this.city[index].id;
+        this.location.city = id;
         this.location.county = '0';
+        this.onChange();
         let county = this.cities.filter(item => item.pid === id);
         if (county.length === 0) {
           this.getCounty(id)
         }
       }
     },
-    onCountyChange() {
+    onCountyChange(index) {
+      this.location.county = this.county[index].id;
       this.onChange();
     },
     onChange() {
@@ -107,19 +109,19 @@ export default {
     },
     getDefault() {
       let defaultLocation = this.value;
-      if (defaultLocation.province > 0) {
+      if (defaultLocation && defaultLocation.province > 0) {
         this.getCities({
-          id: "0"
+          pid: "0"
         });
         this.getCities({
-          id: defaultLocation.province
+          pid: defaultLocation.province
         });
         this.getCities({
-          id: defaultLocation.city
+          pid: defaultLocation.city
         });
       } else {
         this.getCities({
-          id: "0"
+          pid: "0"
         });
       }
     }

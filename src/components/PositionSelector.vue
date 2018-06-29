@@ -1,10 +1,10 @@
 <template lang="html">
 <div class="row">
   <div class="col-6 pr-2">
-    <selector v-model="pIndex" :items="positionParents" @input="parentChange"></selector>
+    <selector v-model="pIndex" :items="positionParents"></selector>
   </div>
   <div class="col-6 pl-2">
-    <selector v-model="cIndex" :items="positionChildren" @input="positionChange"></selector>
+    <selector v-model="cIndex" :items="positionChildren"></selector>
   </div>
 </div>
 </template>
@@ -32,15 +32,26 @@ export default {
   },
   methods: {
     ...mapActions(['getPositions']),
-    positionChange() {
-      console.log(11111);
-      console.log(this.position);
-    },
-    parentChange() {
-      if (this.pIndex) {
-        let pid = this.positionParents[this.pIndex].id
-        console.log(pid);
+    emitValue() {
+      this.$emit('input', this.position)
+    }
+  },
+  watch: {
+    pIndex: function (newIndex, oldIndex) {
+      console.log(newIndex);
+      if (newIndex >= 0) {
+        let pid = this.positionParents[newIndex].id
         this.position.positionParentId = pid;
+        this.emitValue();
+        this.getPositions({ pid })
+      }
+    },
+    cIndex: function (newIndex, oldIndex) {
+      console.log(newIndex);
+      if (newIndex >= 0) {
+        let pid = this.positionChildren[newIndex].id
+        this.position.positionid = pid;
+        this.emitValue();
         this.getPositions({ pid })
       }
     }

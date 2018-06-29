@@ -7,12 +7,11 @@
       </div>
       <div class="col-12 mb-1">
         <h5>职位类型</h5>
-        <position-selector></position-selector>
-        <!-- <input-box placeholder="请输入标题名称" v-model="post.positionid"></input-box> -->
+        <position-selector v-model="position"></position-selector>
       </div>
       <div class="col-12 mb-1">
         <h5>工作性质</h5>
-        <radio-boxes :items="jobNatures" v-model="jobNature"></radio-boxes>
+        <radio-boxes :items="jobNatures" v-model="post.jobnature"></radio-boxes>
       </div>
       <div class="col-12 mb-1">
         <h5>拟招聘人数</h5>
@@ -23,11 +22,23 @@
         <h5>工作周期</h5>
         <div class="row align-items-center">
           <div class="col">
-            <date-picker placeholder="请输入开始日期" v-model="jobDate.start"></date-picker>
+            <date-picker placeholder="请选择开始日期" v-model="jobDate.start" :appendZero="false" format="yyyy.MM.dd"></date-picker>
           </div>
           <div class="col-auto">-</div>
           <div class="col">
-            <date-picker placeholder="请输入结束日期" v-model="jobDate.end"></date-picker>
+            <date-picker placeholder="请选择结束日期" v-model="jobDate.end" :appendZero="false" format="yyyy.MM.dd"></date-picker>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mb-1">
+        <h5>工作时段</h5>
+        <div class="row align-items-center">
+          <div class="col">
+            <time-picker placeholder="请选择开始时间" v-model="jobTime.start"></time-picker>
+          </div>
+          <div class="col-auto">-</div>
+          <div class="col">
+            <time-picker placeholder="请选择结束时间" v-model="jobTime.end"></time-picker>
           </div>
         </div>
       </div>
@@ -37,11 +48,12 @@
       </div>
       <div class="col-12 mb-1">
         <h5>最低学历要求</h5>
-        <selector v-model="post.education" :items="eduList" placeholder="请选择最低学历要求"></selector>
+        <selector v-model="post.education" returnValue :items="eduList" placeholder="请选择最低学历要求"></selector>
       </div>
       <div class="col-12 mb-1">
         <h5>工作地址</h5>
-        <city-selector></city-selector>
+        <city-selector v-model="location"></city-selector>
+        <div class="pb-1"></div>
         <input-box placeholder="请输入工作地址" v-model="post.address"></input-box>
       </div>
       <div class="col-12 mb-1">
@@ -62,11 +74,11 @@
       </div>
       <div class="col-12 mb-1">
         <h5>工资结算</h5>
-        <selector v-model="post.wageclearing" :items="wageClearing" placeholder="请选择工资结算"></selector>
+        <selector v-model="post.wageclearing" returnValue :items="wageClearing" placeholder="请选择工资结算"></selector>
       </div>
       <div class="col-12 mb-1">
         <h5>工资模式</h5>
-        <selector v-model="post.wagemode" :items="wageMode" placeholder="请选择工资模式"></selector>
+        <selector v-model="post.wagemode" returnValue :items="wageMode" placeholder="请选择工资模式"></selector>
       </div>
       <div class="col-12 mb-1">
         <h5>工资范围</h5>
@@ -98,7 +110,7 @@
         <div class="btn btn-primary btn-block shadow-sm">重置</div>
       </div>
       <div class="col pr-0">
-        <div class="btn btn-primary btn-block active shadow-sm">提交</div>
+        <div class="btn btn-primary btn-block active shadow-sm" @click="onSubmit">提交</div>
       </div>
     </div>
   </div>
@@ -109,15 +121,19 @@ import InputBox from "@/components/InputBox";
 import RadioBoxes from "@/components/RadioBoxes";
 import PositionSelector from "@/components/PositionSelector"
 import DatePicker from "@/components/DatePicker";
+import TimePicker from "@/components/TimePicker";
 import Selector from "@/components/Selector";
 import CitySelector from "@/components/CitySelector";
 import constant from "@/constants";
+import util from '@/utils/util';
+import { mapActions } from 'vuex';
 export default {
   components: {
     InputBox,
     RadioBoxes,
     PositionSelector,
     DatePicker,
+    TimePicker,
     Selector,
     CitySelector
   },
@@ -127,8 +143,14 @@ export default {
     eduList: constant.eduList,
     wageClearing: constant.wageClearing,
     wageMode: constant.wageMode,
+    location: {},
+    position: {},
     jobNature: '',
     jobDate: {
+      start: '',
+      end: ''
+    },
+    jobTime: {
       start: '',
       end: ''
     },
@@ -162,6 +184,93 @@ export default {
   computed: {
     jobCycle() {
       return `${this.jobDate.start} - ${this.jobDate.end}`
+    },
+    jobPeriod() {
+      return `${this.jobTime.start} - ${this.jobTime.end}`
+    }
+  },
+  methods: {
+    ...mapActions(['saveRecruiment']),
+    validate() {
+      if (!this.post.title) {
+        util.showToast('标题：' + constant.NoTitle);
+        return false;
+      }
+      if (!this.position.positionid) {
+        util.showToast('职位类型：' + constant.NoPosition);
+        return false;
+      }
+      if (!this.post.jobnature) {
+        util.showToast('工作性质：' + constant.NoJobNature);
+        return false;
+      }
+      if (!this.post.peoplenumber) {
+        util.showToast('招聘人数：' + constant.NoRecruitNum);
+        return false;
+      }
+      if (this.jobDate.start.replace(/\D/g, '') >= this.jobDate.end.replace(/\D/g, '')) {
+        util.showToast('工作周期：' + constant.WrongRange);
+        return false;
+      }
+      if (this.jobTime.start.replace(/\D/g, '') >= this.jobTime.end.replace(/\D/g, '')) {
+        util.showToast('工作时段：' + constant.WrongRange);
+        return false;
+      }
+      if (!this.post.education) {
+        util.showToast('招聘人数：' + constant.NoEduDegree);
+        return false;
+      }
+      if (!this.location.county || !this.post.address) {
+        util.showToast('工作地址：' + constant.WrongAddress);
+        return false;
+      }
+      if (!this.post.workdescription) {
+        util.showToast('工作描述：' + constant.NoDescription);
+        return false;
+      }
+      if (!this.post.jobrequirements) {
+        util.showToast('任职要求：' + constant.NoDescription);
+        return false;
+      }
+      if (!this.post.wageclearing) {
+        util.showToast('工资结算：' + constant.NoSalarySettlement);
+        return false;
+      }
+      if (!this.post.wagemode) {
+        util.showToast('工资模式：' + constant.NoSalaryPayWay);
+        return false;
+      }
+      if (!this.post.wagebegin || !this.post.wageend) {
+        util.showToast('工资范围：' + constant.WrongRange);
+        return false;
+      }
+      if (this.post.wagebegin === '' || this.post.wageend === '' || this.post.wagebegin > this.post.wageend) {
+        util.showToast('工资：' + constant.WrongRange);
+        return false;
+      }
+      if (!this.post.endtime || this.post.endtime === util.formatTime(new Date())) {
+        util.showToast('招聘结束时间：' + constant.WrongDeadline);
+        return false;
+      }
+      return true;
+    },
+    onSubmit() {
+      // if (!this.validate()) return;
+      this.post.positionParentId = this.position.positionParentId;
+      this.post.positionid = this.position.positionid;
+      this.post.jobCycle = this.jobCycle;
+      this.post.jobPeriod = this.jobPeriod;
+      this.post.provinceid = this.location.province;
+      this.post.cityid = this.location.city;
+      this.post.countyid = this.location.county;
+
+      this.post.wagegrant = 'SELF';
+      this.post.commissionunit = '单';
+      if (this.post.jobsex === 'NONE') {
+        delete this.post.jobsex
+      }
+      console.log(JSON.stringify(this.post, null, 2));
+      this.saveRecruiment(this.post);
     }
   }
 };

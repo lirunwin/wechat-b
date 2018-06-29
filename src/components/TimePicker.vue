@@ -1,19 +1,19 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="dateChange" :start="today" mode="date" :value="date" class="py-0 datepicker">
+      <picker @change="timeChange" :start="now" mode="time" :value="time" class="py-0 timepicker">
         <div class="row">
           <view class="col pr-0 py-1 text-truncate">
-              {{date}}
+              {{time}}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
           </div>
         </div>
       </picker>
-      <!-- <picker mode="date" :value="date" start="2015-09-01" end="2017-09-01" @change="dateChange">
+      <!-- <picker mode="time" :value="time" start="2015-09-01" end="2017-09-01" @change="timeChange">
     <view class="picker">
-      当前选择: {{date}}
+      当前选择: {{time}}
     </view>
   </picker> -->
     </div>
@@ -27,35 +27,26 @@ export default {
     placeholder: {
       type: String,
       default: '请选择'
-    },
-    format: {
-      type: String,
-      default: 'yyyy-MM-dd'
-    },
-    appendZero: {
-      type: Boolean,
-      default: true
     }
   },
   data: () => ({
-    today: '',
-    date: ''
+    now: utils.formatTime(new Date(), "hh:mm"),
+    time: ''
   }),
   methods: {
-    dateChange(e) {
-      let val = this.date = utils.formatTime(e.target.value, this.format, this.appendZero);
+    timeChange(e) {
+      let val = this.time = e.target.value;
       this.$emit('input', val);
     },
   },
   mounted() {
-    this.today = utils.formatTime(new Date(), this.format, this.appendZero);
-    this.date = this.today;
-    this.$emit('input', this.today);
+    this.time = this.now;
+    this.$emit('input', this.now);
   }
 }
 </script>
 <style lang="scss">
-.datepicker {
+.timepicker {
     border: none;
 }
 </style>

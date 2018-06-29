@@ -17,15 +17,16 @@ const mutations = {
   // },
 };
 const actions = {
-  // getPositions(context, payload) {
-  //   return RecruitmentService.getPositions(payload).then(((positions) => {
-  //     context.commit('updatePositions', positions);
-  //     return positions;
-  //   }));
-  // },
-  // // uploadFile(context, payload) {
-  // //   return CommonService.uploadFile(payload).then((res => res));
-  // // }
+  saveRecruiment(context, payload) {
+    return RecruitmentService.saveRecruiment(payload).then(((res) => {
+      console.log(res);
+      // context.commit('updatePositions', positions);
+      return positions;
+    }));
+  },
+  // uploadFile(context, payload) {
+  //   return CommonService.uploadFile(payload).then((res => res));
+  // }
 };
 export default {
   state,

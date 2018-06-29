@@ -18,6 +18,14 @@ export default {
     radioChange(e) {
       this.$emit('input', e.target.value);
     }
+  },
+  mounted() {
+    if (this.items.length) {
+      let checked = this.items.find(item => item.checked === true);
+      if (checked) {
+        this.$emit('input', checked.value);
+      }
+    }
   }
 }
 </script>

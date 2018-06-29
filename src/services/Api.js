@@ -1,28 +1,3 @@
-// import axios from 'axios';
-// // import store from '@/store';
-// // import data from '@/mockdata/scoreTags';
-// const instance = axios.create({
-//   baseURL: 'https://local.sapi.s-cout.com/zcb-api/',
-//   // timeout: 1
-//   // timeout: 1000,
-//
-// });
-// instance.interceptors.response.use((response) => {
-//   // TODO: some auth stuff
-//   const data = response.data.data;
-//   if (data) {
-//     return data;
-//   }
-//   return response.data;
-// }, error =>
-//   // return {
-//   //   content: data
-//   // };
-//   Promise.reject(error)
-// );
-//
-// export default instance;
-
 import wx from '@/utils/wx';
 import Fly from 'flyio';
 
@@ -32,6 +7,8 @@ request.config.baseURL = 'https://local.sapi.s-cout.com/zcb-api/'
 
 request.interceptors.request.use((request) => {
   request.headers['X-Tag'] = 'flyio';
+  request.headers['X-Requested-With'] = 'WX_APPLETS';
+  request.headers.user_author = 'rtARpG9wP94NckMoEBJB3lPjUouPhZLzpRClY/NaNm2snHsPsOdkOhxmHNderBAV2Yd8zW3cZhpUaXuKSHIWfQ==';
   wx.showNavigationBarLoading();
   return request;
 });

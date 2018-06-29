@@ -3,10 +3,10 @@
     <div class='col selector-text pr-0'>
       <picker @change="pickerChange" :value="index" :range="items" :range-key="label">
         <div class="row">
-          <view class="col py-1 text-truncate">
+          <view class="col py-1 pr-0 text-truncate">
             {{index === -1 || items.length === 0 ? placeholder : items[index][label]}}
           </view>
-          <div class="col-auto py-1 px-2">
+          <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
           </div>
         </div>
@@ -30,7 +30,10 @@ export default {
       type: String,
       default: 'name'
     },
-    items: Array
+    items: Array,
+    returnValue: {
+      type: [Boolean, String]
+    }
   },
   data: () => ({
     index: -1,
@@ -39,7 +42,11 @@ export default {
     pickerChange(e) {
       let val = e.target.value;
       this.index = val;
-      this.$emit('input', val)
+      if (this.returnValue !== false) {
+        this.$emit('input', this.items[val].value)
+      } else {
+        this.$emit('input', val)
+      }
     }
   }
 }

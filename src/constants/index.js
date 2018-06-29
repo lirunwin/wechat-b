@@ -1,11 +1,11 @@
 export default {
   gender: [
-    { name: '不限', value: 'NONE', checked: 'true' },
+    { name: '不限', value: 'NONE', checked: true },
     { name: '男', value: 'MALE' },
     { name: '女', value: 'FAMALE' }
   ],
   jobNatures: [
-    { name: '兼职', value: 'PARTTIME', checked: true },
+    { name: '兼职', value: 'PARTTIME' },
     { name: '实习', value: 'PRACTICE', disable: true }
   ],
   eduList: [
@@ -27,5 +27,16 @@ export default {
     { name: '底薪+提成', value: 'BASEWAGE_COMMISSION' },
     { name: '底薪', value: 'BASEWAGE' },
     { name: '提成', value: 'COMMISSION' }
-  ]
+  ],
+  NoPosition: '请选择职位类型',
+  NoJobNature: '请选择工作性质',
+  NoTitle: '请填写标题',
+  NoRecruitNum: '招聘人数需大于0',
+  NoEduDegree: '请选择最低学历要求',
+  WrongAddress: '地址有误',
+  NoDescription: '描述不能为空',
+  NoSalarySettlement: '请选择工资结算方式',
+  NoSalaryPayWay: '请选择工资结算模式',
+  WrongRange: '范围错误',
+  WrongDeadline: '截止日期错误'
 }

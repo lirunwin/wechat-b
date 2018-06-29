@@ -1,4 +1,6 @@
-const formatTime = (date, fmt, appendZero = true) => {
+import wx from 'wx';
+
+const formatTime = (date, fmt = 'yyyy-MM-dd', appendZero = true) => {
   date = new Date(date);
   const o = {
     'M+': date.getMonth() + 1, // 月份
@@ -34,7 +36,16 @@ const formatNumber = (n) => {
 const starPhoneNumber = phoneNumber => (!phoneNumber || phoneNumber === '' ? ''
   : `${phoneNumber.substring(0, 3)}****${phoneNumber.substring(7, 11)}`)
 
-
+const showToast = (title, icon = 'none', image = '', duration = 2000) => {
+  wx.showToast({
+    title,
+    icon,
+    image,
+    duration
+  })
+}
 export default {
-  formatTime
+  formatTime,
+  starPhoneNumber,
+  showToast
 }

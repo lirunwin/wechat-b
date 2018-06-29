@@ -6,6 +6,6 @@ export default {
 
   uploadFile: data => Api.post('common/upload', data),
 
-  getCities: data => Api.post('common/getArea', data),
+  getCities: data => Api.get('common/getArea', data),
 
 };
