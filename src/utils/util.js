@@ -1,4 +1,5 @@
 import wx from 'wx';
+import constants from '@/constants';
 
 const formatTime = (date, fmt = 'yyyy-MM-dd', appendZero = true) => {
   date = new Date(date);
@@ -44,8 +45,13 @@ const showToast = (title, icon = 'none', image = '', duration = 2000) => {
     duration
   })
 }
+const constantFilter = (name, value) => {
+  const constant = constants[name].find(constant => constant.value = value);
+  return constant.name || constant.label || '根本没有';
+}
 export default {
   formatTime,
   starPhoneNumber,
-  showToast
+  showToast,
+  constantFilter
 }

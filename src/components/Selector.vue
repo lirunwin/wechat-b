@@ -55,9 +55,6 @@ export default {
 <style lang="scss">
 @import "~@/styles/scss/common";
 .selector {
-    .caret {
-        @include caret;
-    }
     .selector-text {
         color: $material-color-grey-600;
     }

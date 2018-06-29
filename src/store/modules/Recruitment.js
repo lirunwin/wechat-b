@@ -1,32 +1,50 @@
 import RecruitmentService from '@/services/RecruitmentService';
 
 const state = {
-  // positions: []
+  recruitments: [],
+  recruitmentsDetails: []
 };
 const getters = {
-  // positions: state => state.positions,
-  // positionParents: (state) => {
-  //   const temp = state.positions.filter(position => position.pid === '0' || position.pid === '')
-  //   console.log(JSON.stringify(state.positions, null, 2));
-  //   return temp;
-  // },
+  recruitments: state => state.recruitments,
+  recruitmentsDetails: state => state.recruitmentsDetails,
 };
 const mutations = {
-  // updatePositions: (state, payload) => {
-  //   state.positions = state.positions.concat(payload);
-  // },
+  updateRecruitments: (state, payload) => {
+    state.recruitments = state.recruitments.concat(payload);
+  },
 };
 const actions = {
-  saveRecruiment(context, payload) {
-    return RecruitmentService.saveRecruiment(payload).then(((res) => {
-      console.log(res);
-      // context.commit('updatePositions', positions);
-      return positions;
-    }));
+  fetchRecruitments({ commit }, payload) {
+    return RecruitmentService.fetchRecruitments(payload).then((recruitments) => {
+      commit('updateRecruitments', recruitments);
+      return recruitments;
+    });
   },
-  // uploadFile(context, payload) {
-  //   return CommonService.uploadFile(payload).then((res => res));
-  // }
+  saveRecruitment(context, payload) {
+    return RecruitmentService.saveRecruitment(payload).then((res) => {
+      if (res) {
+        payload.id = res
+      }
+      context.commit('updateRecruitments', [recruitments]);
+      return payload;
+    });
+  },
+  fetchRecruitmentDetail({ commit }, payload) {
+    return RecruitmentService.fetchRecruitmentDetail(payload).then((recruitment) => {
+      console.log(recruitment);
+      return recruitment;
+
+      // commit('updateRecruitments', recruitment);
+    });
+  },
+  fetchRecruitList({ commit }, payload) {
+    return RecruitmentService.fetchRecruitList(payload).then((recruits) => {
+      console.log(recruits);
+      return recruits;
+
+      // commit('updateRecruitments', recruitment);
+    });
+  }
 };
 export default {
   state,

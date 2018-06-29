@@ -16,6 +16,10 @@
   box-shadow: map-get($shadows, 2) !important;
 }
 
+.shadow-xs {
+  box-shadow: map-get($shadows, 0.5) !important;
+}
+
 @each $shadow, $value in $shadows {
   .shadow-#{$shadow} {
     box-shadow: $value !important;

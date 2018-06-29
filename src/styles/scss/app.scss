@@ -1,11 +1,30 @@
 // main scss
 @import 'materialize';
 @import "common";
+@import "daemonite-material";
 @import "stepper";
 button::after {
   border: none;
 }
 
+.size-1 {
+  font-size: $size-1 !important;
+}
+.size-2 {
+  font-size: $size-2 !important;
+}
+.size-3 {
+  font-size: $size-3 !important;
+}
+.size-4 {
+  font-size: $size-4 !important;
+}
+.size-5 {
+  font-size: $size-5 !important;
+}
+.caret {
+    @include caret;
+}
 Page {
   background-color: map-get($primary,color);
   box-sizing: border-box;

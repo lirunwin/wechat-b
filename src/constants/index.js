@@ -28,6 +28,13 @@ export default {
     { name: '底薪', value: 'BASEWAGE' },
     { name: '提成', value: 'COMMISSION' }
   ],
+  jobStatus: [
+    { name: '等待审核', value: 'NEW_RELEASE' },
+    { name: '正在招募', value: 'CHECK_SUCCESSS' },
+    { name: '审核不通过', value: 'CHECK_FAIL' },
+    { name: '招募完成', value: 'COMPLETED' },
+    { name: '已取消', value: 'CANCEL' }
+  ],
   NoPosition: '请选择职位类型',
   NoJobNature: '请选择工作性质',
   NoTitle: '请填写标题',

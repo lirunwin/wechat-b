@@ -4,6 +4,7 @@ $size-2: 14px;
 $size-3: 16px;
 $size-4: 18px;
 $size-4: 20px;
+$size-5: 24px;
 $enable-caret: true;
 $caret-width:.3em;
 $rem: 16px; // daemonite-material
@@ -13,6 +14,7 @@ $btn-height: 2.75 * $rem;
 $btn-height-lg: 3.25 * $rem;
 $btn-height-sm: 2.25 * $rem;
 $border-radius: 3px;
+$color-gray: #e6e6e6;
 $yiq-contrasted-threshold: 185;
 $stepper-text-color: #ffffff;
 $primary: (
@@ -21,9 +23,9 @@ $primary: (
   light: #a7b498
 );
 $secondary: (
-  color: #f9f9f9,
+  color: #4b593a,
   dark: #edf1e8,
-  light: #fcfcfc
+  light: #f9f9f9
 );
 @import "../daemonite-material/functions";
 @import "../daemonite-material/mixins";

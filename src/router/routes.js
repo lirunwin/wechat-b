@@ -41,5 +41,21 @@ module.exports = [
     config: {
       navigationBarTitleText: '发布招聘信息'
     }
+  },
+  {
+    path: '/pages/recruitment/index',
+    name: 'RecuitmentList',
+    config: {
+      navigationBarTitleText: '招聘信息',
+      enablePullDownRefresh: true,
+    }
+  },
+  {
+    path: '/pages/recruitment/detail',
+    name: 'PostRecuitmentDetail',
+    config: {
+      navigationBarTitleText: '招聘详情',
+      enablePullDownRefresh: true,
+    }
   }
 ];

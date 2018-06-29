@@ -17,7 +17,7 @@ export default {
   config: {
     pages: [
       // '^pages/user/signup',
-      '^pages/recruitment/post',
+      '^pages/recruitment/detail',
     ], // Will be filled in webpack
     window: {
       // backgroundTextStyle: 'light',

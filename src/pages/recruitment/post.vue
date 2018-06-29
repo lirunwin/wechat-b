@@ -190,7 +190,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['saveRecruiment']),
+    ...mapActions(['saveRecruitment']),
     validate() {
       if (!this.post.title) {
         util.showToast('标题：' + constant.NoTitle);
@@ -269,8 +269,11 @@ export default {
       if (this.post.jobsex === 'NONE') {
         delete this.post.jobsex
       }
+      if (this.post.education === 'LEVEL_0' || this.post.education === '') {
+        delete this.post.education
+      }
       console.log(JSON.stringify(this.post, null, 2));
-      this.saveRecruiment(this.post);
+      this.saveRecruitment(this.post);
     }
   }
 };

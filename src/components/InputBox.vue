@@ -46,7 +46,7 @@ export default {
 @import '~@/styles/scss/variables';
 ._input-label {
     border: 1px map-get($primary,color) solid;
-    background: map-get($secondary,color);
+    background: map-get($secondary,light);
     border-radius: $border-radius;
     font-size: 16px;
     position: relative;
