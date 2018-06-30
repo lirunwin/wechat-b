@@ -41,7 +41,7 @@ view,text,label,textarea {
 textarea {
   vertical-align: top;
   border: 1px map-get($primary,color) solid;
-  background-color: map-get($secondary,color);
+  background-color: map-get($secondary,light);
   border-radius: $border-radius;
   padding: 0.5em;
   font-size: 16px;

@@ -126,8 +126,7 @@ import Selector from "@/components/Selector";
 import CitySelector from "@/components/CitySelector";
 import constant from "@/constants";
 import util from '@/utils/util';
-import wx from '@/utils/wx';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 export default {
   components: {
     InputBox,
@@ -146,7 +145,7 @@ export default {
     wageMode: constant.wageMode,
     location: {},
     position: {},
-    // jobNature: '',
+    jobNature: '',
     jobDate: {
       start: '',
       end: ''
@@ -188,8 +187,7 @@ export default {
     },
     jobPeriod() {
       return `${this.jobTime.start} - ${this.jobTime.end}`
-    },
-    ...mapGetters(['recruitmentsDetails'])
+    }
   },
   methods: {
     ...mapActions(['saveRecruitment']),
@@ -276,93 +274,6 @@ export default {
       }
       console.log(JSON.stringify(this.post, null, 2));
       this.saveRecruitment(this.post);
-    }
-  },
-  mounted() {
-    let mode = this.$route.query.mode;
-    if (mode !== 'edit') {
-      wx.setNavigationBarTitle({
-        title: '修改招聘信息'
-      })
-      // this.fetchRecruitmentDetail({ id: this.$route.query.id });
-      // let detail = this.recruitmentsDetails.find(detail => detail.id = this.$route.query.id);
-      let detail = {
-        "id": "1525552632891189",
-        "comid": "1525551681067221",
-        "createuserid": "1525405461092662",
-        "createtime": "2018-05-06",
-        "lastupdatetime": 1525552633000,
-        "title": "微商招代理宝妈白领创业投资首选",
-        "positionid": "1525450582725634",
-        "jobnature": "兼职",
-        "jobperiodbegin": 540,
-        "jobperiodend": 960,
-        "jobsex": null,
-        "peoplenumber": 20,
-        "recruitednumber": null,
-        "mineducation": "初中/中专",
-        "jobbegintime": "2018-05-06",
-        "jobendtime": "3918-08-01",
-        "provinceid": "51",
-        "cityid": "5101",
-        "countyid": "510102",
-        "address": "AAAAA成都市武侯祠博物馆1212222",
-        "longitude": 104.055837,
-        "latitude": 30.652549,
-        "endtime": null,
-        "wageclearing": "日结",
-        "wagebegin": 80,
-        "wageend": 150,
-        "wagemode": "底薪+提成",
-        "wagegrant": null,
-        "commissionunit": null,
-        "wagebase": 100,
-        "wagecommission": 0,
-        "jobstatus": "等待审核",
-        "checkid": null,
-        "workdescription": "工作地址：双流综合保税区\n报名编辑:编辑短信姓名+年龄+小时工到王老师手机上\n全程面试无任何中介费，欢迎求职者了解咨询！",
-        "jobrequirements": "工作地址：双流综合保税区\n报名编辑:编辑短信姓名+年龄+小时工到王老师手机上\n全程面试无任何中介费，欢迎求职者了解咨询！",
-        "positionName": "校园代理",
-        "positionParentId": "1525450582631320",
-        "positionParentName": "特色职位",
-        "provinceName": "四川省",
-        "cityName": "成都市",
-        "countyName": null,
-        "checkRemark": null,
-        "jobPeriod": "05:40 - 09:60",
-        "jobCycle": "2018.5.6 - 3918.8.1",
-        "collectionId": null,
-        "deliveryStatus": null,
-        "introduce": null,
-        "companyInfo": null,
-        "commission": "",
-        "sexName": "",
-        "endTimeFmat": "",
-        "createTimeFmat": "2018-05-06",
-        "pid": "1525552632891189"
-      }
-      // console.log(JSON.stringify(detail, null, 2));
-      this.position = {
-        positionParentId: detail.positionParentId,
-        positionid: detail.positionid
-      }
-      this.location = {
-        province: detail.provinceid,
-        city: detail.cityid,
-        county: detail.countyid
-      }
-      let jobCycle = detail.jobCycle.split('-');
-      this.jobDate = {
-        start: jobCycle[0],
-        end: jobCycle[1]
-      }
-      let jobPeriod = detail.jobPeriod.split('-');
-      this.jobTime = {
-        start: jobPeriod[0],
-        end: jobPeriod[1]
-      }
-      this.post = detail;
-      // console.log(JSON.stringify(this.position, null, 2));
     }
   }
 };

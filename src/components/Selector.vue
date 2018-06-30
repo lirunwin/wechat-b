@@ -33,7 +33,8 @@ export default {
     items: Array,
     returnValue: {
       type: [Boolean, String]
-    }
+    },
+    test: String
   },
   data: () => ({
     index: -1,
@@ -46,6 +47,16 @@ export default {
         this.$emit('input', this.items[val].value)
       } else {
         this.$emit('input', val)
+      }
+    }
+  },
+  watch: {
+    value(newValue, oldValue) {
+      if (!oldValue) {
+        console.log(newValue);
+        this.index = this.items.findIndex(item => item.id === newValue);
+        console.log('index:',
+          this.index);
       }
     }
   }

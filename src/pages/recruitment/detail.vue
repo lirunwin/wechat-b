@@ -63,7 +63,7 @@
               <div class="btn btn-primary btn-block" @click="onCancelRecruitment">取消招募</div>
             </div>
             <div class="col">
-              <div class="btn btn-primary btn-block active">修改招募</div>
+              <div class="btn btn-primary btn-block active" @click="editRecruitment">修改招募</div>
             </div>
           </div>
         </div>
@@ -139,6 +139,9 @@ export default {
             this.$router.go()
           }, 2000);
         });
+    },
+    editRecruitment() {
+      this.$router.push({ path: '/pages/recruitment/post', query: { mode: 'edit', id: this.id } })
     },
     refresh() {
       Promise.all([

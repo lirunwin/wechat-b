@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="timeChange" :start="now" mode="time" :value="time" class="py-0 timepicker">
+      <picker @change="timeChange" mode="time" :value="time" class="py-0 timepicker">
         <div class="row">
           <view class="col pr-0 py-1 text-truncate">
               {{time}}
