@@ -47,11 +47,18 @@ const showToast = (title, icon = 'none', image = '', duration = 2000) => {
 }
 const constantFilter = (name, value) => {
   const constant = constants[name].find(constant => constant.value = value);
-  return constant.name || constant.label || '根本没有';
+  if (!constant) return value;
+  return constant.name || constant.label || value;
+}
+const constantHelper = (name, value) => {
+  const constant = constants[name].find(constant => constant.label = value);
+  if (!constant) return value;
+  return constant.value || '';
 }
 export default {
   formatTime,
   starPhoneNumber,
   showToast,
-  constantFilter
+  constantFilter,
+  constantHelper
 }

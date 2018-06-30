@@ -1,16 +1,81 @@
 import RecruitmentService from '@/services/RecruitmentService';
+import { unionBy, remove } from 'lodash';
+import util from '@/utils/util';
+import constants from '@/constants';
 
 const state = {
   recruitments: [],
-  recruitmentsDetails: []
+  recruitmentsDetails: [],
+  standByRecruits: [],
+  confirmedRecruits: []
 };
 const getters = {
   recruitments: state => state.recruitments,
   recruitmentsDetails: state => state.recruitmentsDetails,
+  standByRecruits: state => state.standByRecruits,
+  confirmedRecruits: state => state.confirmedRecruits,
 };
 const mutations = {
   updateRecruitments: (state, payload) => {
     state.recruitments = state.recruitments.concat(payload);
+  },
+  updateRecruitmentsDetails: (state, payload) => {
+    // 之后有时间再做缓存吧, 现在就直接覆盖
+    payload.identitytype = util.constantFilter('identityType', payload.identitytype);
+    payload.jobstatus = util.constantFilter('jobStatus', payload.jobstatus);
+    payload.jobnature = util.constantFilter('jobNatures', payload.jobnature);
+    payload.wageclearing = util.constantFilter('wageClearing', payload.wageclearing);
+    payload.wagemode = util.constantFilter('wageMode', payload.wagemode);
+    state.recruitmentsDetails = [payload]
+  },
+  deleteFromRecruitments: (state, id) => {
+    const recruitments = state.recruitments.slice();
+    remove(recruitments, item => item.id === id);
+    state.recruitments = recruitments;
+  },
+  updateStandByRecruits: (state, payload) => {
+    payload.list = payload.list.map((item) => {
+      item.activeAction = false;
+      item.identitytype = util.constantFilter('identityType', item.identitytype);
+      return item;
+    });
+    const recruit = state.standByRecruits.find(recruit => recruit.recruitmentId === payload.recruitmentId);
+    if (!recruit) {
+      state.standByRecruits = state.standByRecruits.concat(payload);
+    } else {
+      state.standByRecruits = state.standByRecruits.map((recruit) => {
+        if (recruit.recruitmentId === payload.recruitmentId) {
+          recruit.list = unionBy(payload.list, recruit.list, 'deliveryId')
+        }
+        return recruit;
+      })
+    }
+  },
+  updateRecruits: (state, { id, pid }) => {
+
+  },
+  updateConfirmedRecruits: (state, payload) => {
+    payload.list = payload.list.map((item) => {
+      item.identitytype = util.constantFilter('identityType', item.identitytype);
+      return item;
+    });
+    const recruit = state.confirmedRecruits.find(recruit => recruit.recruitmentId === payload.recruitmentId);
+    if (!recruit) {
+      state.confirmedRecruits = state.confirmedRecruits.concat(payload);
+    } else {
+      state.confirmedRecruits = state.confirmedRecruits.map((recruit) => {
+        if (recruit.recruitmentId === payload.recruitmentId) {
+          recruit.list = unionBy(payload.list, recruit.list, 'deliveryId')
+        }
+        return recruit;
+      })
+    }
+  },
+  resetRecruitmentState: (state) => {
+    // state.recruitments = [];
+    state.recruitmentsDetails = [];
+    state.standByRecruits = [];
+    state.confirmedRecruits = [];
   },
 };
 const actions = {
@@ -29,20 +94,70 @@ const actions = {
       return payload;
     });
   },
-  fetchRecruitmentDetail({ commit }, payload) {
-    return RecruitmentService.fetchRecruitmentDetail(payload).then((recruitment) => {
-      console.log(recruitment);
-      return recruitment;
-
-      // commit('updateRecruitments', recruitment);
+  cancelRecruitment({ commit }, id) {
+    const status = util.constantHelper('recruitmentStatus', 'CANCEL');
+    if (!status) {
+      util.showToast('数据有误,请稍后再试');
+      return;
+    }
+    return RecruitmentService.changeRecruitmentStatus({ id, status }).then((res) => {
+      commit('deleteFromRecruitments', id);
+      if (res.msg) util.showToast(res.msg)
     });
   },
-  fetchRecruitList({ commit }, payload) {
+  agreeApply: ({ commit }, payload) => {
+    const deliveryStatus = util.constantHelper('recruitmentApplyStatus', 'AGREE');
+    if (!deliveryStatus) {
+      util.showToast('数据有误,请稍后再试');
+      return;
+    }
+    return RecruitmentService.changeRecruitmentApplyStatus({ id: payload.id, deliveryStatus }).then((res) => {
+      // commit('updateRecruits', payload);  目前就直接刷新算了
+      if (res.msg) util.showToast(res.msg);
+    })
+  },
+  rejectApply: ({ commit }, payload) => {
+    const deliveryStatus = util.constantHelper('recruitmentApplyStatus', 'REJECT');
+    if (!deliveryStatus) {
+      util.showToast('数据有误,请稍后再试');
+      return;
+    }
+    return RecruitmentService.changeRecruitmentApplyStatus({ id: payload.id, deliveryStatus }).then((res) => {
+      // commit('updateRecruits', payload);  目前就直接刷新算了
+      if (res.msg) util.showToast(res.msg);
+    })
+  },
+  fetchRecruitmentDetail({ commit }, payload) {
+    return RecruitmentService.fetchRecruitmentDetail(payload).then((recruitment) => {
+      recruitment.pid = payload.id
+      commit('updateRecruitmentsDetails', recruitment);
+      return recruitment;
+    });
+  },
+  fetchStandByRecruits({ commit }, payload) {
     return RecruitmentService.fetchRecruitList(payload).then((recruits) => {
-      console.log(recruits);
-      return recruits;
-
-      // commit('updateRecruitments', recruitment);
+      const list = recruits.content;
+      if (list) {
+        const obj = {
+          recruitmentId: payload.recruitmentId,
+          list
+        }
+        commit('updateStandByRecruits', obj);
+      }
+      return list || [];
+    });
+  },
+  fetchConfirmedRecruits({ commit }, payload) {
+    return RecruitmentService.fetchRecruitList(payload).then((recruits) => {
+      const list = recruits.content;
+      if (list) {
+        const obj = {
+          recruitmentId: payload.recruitmentId,
+          list
+        }
+        commit('updateConfirmedRecruits', obj);
+      }
+      return list || [];
     });
   }
 };

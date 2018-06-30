@@ -15,15 +15,21 @@ request.interceptors.request.use((request) => {
 
 request.interceptors.response.use(
   (response, promise) => {
+    // console.log({ response });
     wx.hideNavigationBarLoading();
     const res = response.data;
     if (res.code === 1) {
-      return promise.resolve(res.data);
+      if (res.data) {
+        return promise.resolve(res.data);
+      }
+      return promise.resolve(res);
     }
-    wx.showToast({
-      title: res.msg,
-      icon: 'none',
-    });
+    if (res.msg) {
+      wx.showToast({
+        title: res.msg,
+        icon: 'none',
+      });
+    }
     return promise.reject(res);
   },
   (err, promise) => {

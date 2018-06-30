@@ -31,7 +31,6 @@ export default {
         page.pageIndex += 1;
         this.fetchRecruitments(page)
           .then((res) => {
-            console.log({ res });
             if (res.length === 0) {
               this.noMoreData = true;
             }
@@ -54,7 +53,6 @@ export default {
         recruitment.jobstatus = util.constantFilter('jobStatus', recruitment.jobstatus);
         recruitment.jobnature = util.constantFilter('jobNatures', recruitment.jobnature);
         recruitment.wageclearing = util.constantFilter('wageClearing', recruitment.wageclearing);
-
         return recruitment;
       });
     }

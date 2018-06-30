@@ -35,6 +35,18 @@ export default {
     { name: '招募完成', value: 'COMPLETED' },
     { name: '已取消', value: 'CANCEL' }
   ],
+  identityType: [
+    { name: '学生', value: 'STUDENT' },
+    { name: '非学生', value: 'OTHRE' },
+  ],
+  recruitmentStatus: [
+    { name: '取消', value: 'CANCEL', label: 'CANCEL' },
+    { name: '完成', value: 'COMPLETED', label: 'COMPLETED' },
+  ],
+  recruitmentApplyStatus: [
+    { name: '拒绝', value: 'REFUSE', label: 'REJECT' },
+    { name: '同意', value: 'AGREE', label: 'AGREE' },
+  ],
   NoPosition: '请选择职位类型',
   NoJobNature: '请选择工作性质',
   NoTitle: '请填写标题',
