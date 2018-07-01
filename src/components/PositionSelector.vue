@@ -10,7 +10,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {
+  mapGetters,
+  mapActions
+} from 'vuex';
 import Selector from "@/components/Selector";
 export default {
   props: ['value'],
@@ -39,17 +42,22 @@ export default {
     }
   },
   watch: {
-    pid: function (newPid) {
+    pid: function(newPid) {
       if (newPid) {
         this.position.positionParentId = newPid;
         this.emitValue();
-        this.getPositions({ pid: newPid })
+        this.getPositions({
+            pid: newPid
+          })
           .then(() => {
-            this.cid = this.initCid
+            if (this.initCid !== null) {
+              this.cid = this.initCid;
+              this.initCid = null;
+            }
           })
       }
     },
-    cid: function (newCid) {
+    cid: function(newCid) {
       if (newCid) {
         this.position.positionid = newCid;
         this.emitValue();
@@ -57,7 +65,9 @@ export default {
     }
   },
   mounted() {
-    this.getPositions({ pid: 0 })
+    this.getPositions({
+        pid: 0
+      })
       .then((res) => {
         // console.log(123, res);
         // console.log(1, JSON.stringify(this.value));

@@ -127,7 +127,10 @@ import CitySelector from "@/components/CitySelector";
 import constant from "@/constants";
 import util from '@/utils/util';
 import wx from '@/utils/wx';
-import { mapActions, mapGetters } from 'vuex';
+import {
+  mapActions,
+  mapGetters
+} from 'vuex';
 export default {
   components: {
     InputBox,
@@ -351,6 +354,7 @@ export default {
         city: detail.cityid,
         county: detail.countyid
       }
+      console.log(12, this.location);
       let jobCycle = detail.jobCycle.split('-');
       this.jobDate = {
         start: jobCycle[0],

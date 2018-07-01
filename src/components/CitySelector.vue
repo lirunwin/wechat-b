@@ -11,7 +11,7 @@
           ></selector>
         </div>
     </div>
-    <div class="col-4" v-if="disableCity === undefined">
+      <div class="col-4" v-if="disableCity === null">
       <div>
         <selector
           :items="city"
@@ -22,7 +22,7 @@
         ></selector>
       </div>
     </div>
-    <div class="col-4" v-if="disableCity === undefined && disableCounty === undefined">
+    <div class="col-4" v-if="disableCity === null && disableCounty === null">
       <div class="pl-1">
         <selector
           :items="county"
@@ -37,14 +37,30 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {
+  mapGetters,
+  mapActions
+} from 'vuex';
 import Selector from '@/components/Selector';
 export default {
   name: 'CitySelector',
   components: {
     Selector
   },
-  props: ['value', 'disableCity', 'disableCounty'],
+  props: {
+    value: {
+      type: Object,
+      default: null
+    },
+    disableCity: {
+      type: [String, Boolean],
+      default: null
+    },
+    disableCounty: {
+      type: [String, Boolean],
+      default: null
+    }
+  },
   data: () => ({
     items: [],
     location: {}
@@ -61,16 +77,32 @@ export default {
       return this.cities.filter(item => item.pid === this.location.city);
     }
   },
+  watch: {
+    'value': {
+      deep: true,
+      handler(newValue, oldValue) {
+        if (!oldValue.province) {
+          console.log(JSON.stringify(newValue), JSON.stringify(oldValue));
+
+        }
+      },
+      // immediate: true
+    }
+  },
   methods: {
     ...mapActions(['getCities']),
     getCity(pid) {
-      this.getCities({ pid })
+      this.getCities({
+        pid
+      })
     },
     getCounty(pid) {
-      this.getCities({ pid })
+      this.getCities({
+        pid
+      })
     },
     onProvinceChange(index) {
-      if (this.disableCity === undefined) {
+      if (this.disableCity === null) {
         let id = this.province[index].id;
         this.location.province = id;
         this.location.city = '0';
@@ -83,7 +115,7 @@ export default {
       }
     },
     onCityChange(index) {
-      if (this.disableCounty === undefined) {
+      if (this.disableCounty === null) {
         let id = this.city[index].id;
         this.location.city = id;
         this.location.county = '0';
@@ -99,10 +131,10 @@ export default {
       this.onChange();
     },
     onChange() {
-      if (this.disableCity !== undefined) {
+      if (this.disableCity !== null) {
         delete this.location.city
       }
-      if (this.disableCounty !== undefined) {
+      if (this.disableCounty !== null) {
         delete this.location.county
       }
       this.$emit('input', this.location);
@@ -128,6 +160,7 @@ export default {
   },
   mounted() {
     this.location = Object.assign({}, this.value);
+    console.log(19, this.value);
     this.getDefault();
   }
 }

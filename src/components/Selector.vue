@@ -43,20 +43,24 @@ export default {
     pickerChange(e) {
       let val = e.target.value;
       this.index = val;
+      console.log(1, val);
       if (this.returnValue !== false) {
-        this.$emit('input', this.items[val].value)
+        console.log(this.items);
+        this.$emit('input', this.items[val].value || this.items[val].id);
+        console.log(2, this.items[val].value || this.items[val].id);
       } else {
-        this.$emit('input', val)
+        this.$emit('input', val);
+        console.log(3, val);
       }
     }
   },
   watch: {
     value(newValue, oldValue) {
       if (!oldValue) {
-        console.log(newValue);
+        // console.log(newValue);
         this.index = this.items.findIndex(item => item.id === newValue);
-        console.log('index:',
-          this.index);
+        // console.log('index:',
+        //   this.index);
       }
     }
   }
