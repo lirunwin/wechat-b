@@ -22,16 +22,16 @@
          <div class="card-body">
            <div class="row">
              <div class="col-12 mb-1">
-               <input-box v-model="user.tel" placeholder="手机号码" maxlength="11"></input-box>
+               <input-box v-model.lazy="user.tel" placeholder="手机号码" maxlength="11"></input-box>
              </div>
              <div class="col-12 mb-1">
-               <input-box v-model="user.veryCode" placeholder="验证码" :sms="true" type="number" maxlength="6"></input-box>
+               <input-box v-model.lazy="user.veryCode" placeholder="验证码" :sms="true" type="number" maxlength="6"></input-box>
              </div>
              <div class="col-12 mb-1">
-               <input-box v-model="user.password" placeholder="密码" type="password" maxlength="30"></input-box>
+               <input-box v-model.lazy="user.password" placeholder="密码" type="password" maxlength="30"></input-box>
              </div>
              <div class="col-12 mb-1">
-               <input-box v-model="user.rePassword" placeholder="确认密码" tyep="password" maxlength="30"></input-box>
+               <input-box v-model.lazy="user.rePassword" placeholder="确认密码" type="password" maxlength="30"></input-box>
              </div>
            </div>
          </div>
@@ -48,19 +48,19 @@
             <div class="row">
               <div class="col-12 mb-1">
                 <h5>企业名称</h5>
-                <input-box v-model="user.tel" placeholder="12" maxlength="11"></input-box>
+                <input-box v-model.lazy="user.tel" placeholder="12" maxlength="11"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>联系人</h5>
-                <input-box v-model="user.veryCode" placeholder="验证码" type="number" maxlength="6"></input-box>
+                <input-box v-model.lazy="user.veryCode" placeholder="验证码" type="number" maxlength="6"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>联系电话</h5>
-                <input-box v-model="user.password" placeholder="密码" type="password" maxlength="30"></input-box>
+                <input-box v-model.lazy="user.password" placeholder="密码" type="password" maxlength="30"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>公司电话</h5>
-                <input-box v-model="user.rePassword" placeholder="确认密码" type="password" maxlength="30"></input-box>
+                <input-box v-model.lazy="user.rePassword" placeholder="确认密码" type="password" maxlength="30"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>公司地址</h5>
@@ -72,7 +72,7 @@
               </div>
               <div class="col-12 mb-1">
                 <h5>公司简介</h5>
-                <input-box v-model="user.rePassword" placeholder="确认密码" tyep="password" maxlength="30"></input-box>
+                <input-box v-model.lazy="user.rePassword" placeholder="确认密码" tyep="password" maxlength="30"></input-box>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@ export default {
     ImageUploader
   },
   data: () => ({
-    step: 2,
+    step: 1,
     user: {
       tel: '',
       veryCode: '',
