@@ -10,18 +10,22 @@
     <div class="row">
       <div class="col-12 px-0 pb-1">
         <div class="px-3">
-          <input-box placeholder="请输入手机号"></input-box>
+          <input-box placeholder="请输入手机号" v-model.lazy="user.account"></input-box>
         </div>
       </div>
       <div class="col-12 px-0">
         <div class="px-3">
-          <input-box placeholder="密码"></input-box>
+          <input-box placeholder="密码" type="password" v-model.lazy="user.password"></input-box>
         </div>
       </div>
       <div class="col-12 px-0 pt-3">
         <div class="px-3">
           <div class="row">
-            <div class="btn btn-primary btn-block shadow-xs col-12">登录</div>
+            <div class="btn btn-primary btn-block shadow-xs col-12 signin-btn" @click="onSignIn">登录</div>
+          </div>
+          <div class="row size-2 pt-1">
+            <div class="col px-0" @click="navigageToFindPwd">忘记密码</div>
+            <div class="col px-0 text-right" @click="navigageToSignUp">马上注册</div>
           </div>
         </div>
       </div>
@@ -34,14 +38,53 @@
 
 <script>
 import InputBox from '@/components/InputBox';
+import { mapActions } from 'vuex';
+import constant from '@/constants';
+import util from '@/utils/util';
+import wx from '@/utils/wx';
 export default {
   components: {
     InputBox
   },
   data: () => ({
     logo: require('@/assets/img/logo.png'),
-    btnBg: require('@/assets/img/signin_btn_bg.png')
-  })
+    user: {
+      loginType: 'PASSWORD',
+      account: '',
+      password: ''
+    }
+  }),
+  methods: {
+    ...mapActions(['signIn']),
+    onSignIn() {
+      console.log(this.user.account);
+      if (!this.user.account) {
+        util.showToast('电话号码不能为空');
+        return;
+      }
+      if (!constant.regExp.phone.test(this.user.account)) {
+        util.showToast('电话号码有误');
+        return;
+      }
+      if (!this.user.password) {
+        util.showToast('密码不能为空');
+        return;
+      }
+      this.signIn(this.user).then(res => {
+        console.log(res);
+      }).catch(res => {
+        wx.setStorageSync(constant.userKeyName, 'rtARpG9wP94NckMoEBJB3lPjUouPhZLzpRClY/NaNm2snHsPsOdkOhxmHNderBAV2Yd8zW3cZhpUaXuKSHIWfQ==');
+        this.$store.commit('logedIn');
+        this.$router.push({ path: '/pages/recruitment/index', isTab: true })
+      });
+    },
+    navigageToFindPwd() {
+      this.$router.push({ path: '/pages/user/findpwd' })
+    },
+    navigageToSignUp() {
+      this.$router.push({ path: '/pages/user/signup', query: { step: 1 } })
+    }
+  }
 }
 </script>
 
@@ -57,6 +100,10 @@ export default {
     .signin-bg {
         padding-top: calc(100vw * 0.4213333334);
         background: url("~@/assets/img/signin_bg.png");
+        background-size: cover;
+    }
+    .signin-btn {
+        background: url("~@/assets/img/signin_btn_bg.png");
         background-size: cover;
     }
 }

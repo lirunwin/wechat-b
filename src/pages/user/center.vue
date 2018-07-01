@@ -15,18 +15,44 @@
     <div class="row pb-4">
       <div class="col-12">
         <div class="px-3">
-          <div class="btn btn-primary btn-block shadow-xs">修改信息</div>
+          <div class="btn btn-primary btn-block shadow-xs" @click="editUserInfo">修改信息</div>
         </div>
         <div class="px-3 mt-2">
-          <div class="btn btn-outline-primary btn-block shadow-xs">退出登录</div>
+          <div class="btn btn-outline-primary btn-block shadow-xs" @click="onLogout">退出登录</div>
         </div>
       </div>
     </div>
+    <!-- <tabbar></tabbar> -->
   </div>
 </template>
 
 <script>
-export default {}
+// import Tabbar from '@/components/Tabbar';
+import { mapActions } from 'vuex';
+import util from '@/utils/util';
+import wx from '@/utils/wx';
+export default {
+  // components: {
+  //   TabBar
+  // },
+  methods: {
+    ...mapActions(['logout']),
+    editUserInfo() {
+      this.$router.replace({ path: '/pages/user/signup', query: { step: 2 } });
+    },
+    onLogout() {
+      this.logout().then(() => {
+        setTimeout(() => {
+          this.$router.replace({ path: '/pages/user/signin' });
+        }, 2000)
+      }).catch(() => {
+        setTimeout(() => {
+          this.$router.replace({ path: '/pages/user/signin' });
+        }, 2000)
+      });
+    }
+  }
+}
 </script>
 
 <style lang="scss">

@@ -47,7 +47,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['recruitments']),
+    ...mapGetters(['recruitments', 'isLogedIn']),
     computedRecruitments() {
       return this.recruitments.map(recruitment => {
         recruitment.jobstatus = util.constantFilter('jobStatus', recruitment.jobstatus);
@@ -58,6 +58,12 @@ export default {
     }
   },
   mounted() {
+    if (!this.isLogedIn) {
+      wx.redirectTo({
+        url: '/pages/user/signin'
+      });
+      return;
+    }
     this.fetchRecruitments(this.page)
   },
   onPullDownRefresh() {

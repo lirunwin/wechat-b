@@ -5,7 +5,7 @@
         <input-box placeholder="请输入手机号" v-model="user.tel" maxlength="11"></input-box>
       </div>
       <div class="col-12 pb-1">
-        <input-box placeholder="请输入验证码" v-model="user.veryCode"maxlength="6" sms></input-box>
+        <input-box placeholder="请输入验证码" v-model="user.veryCode"maxlength="6" sms :tel="user.tel"></input-box>
       </div>
       <div class="col-12 pb-1">
         <input-box placeholder="新密码" v-model="user.password" type="password" maxlength="30"></input-box>
@@ -30,9 +30,9 @@ export default {
   },
   data: () => ({
     user: {
-      "tel": "18780635151", //手机号
-      "password": "123456", //密码
-      "veryCode": "09369", //手机验证码
+      "tel": "", //手机号
+      "password": "", //密码
+      "veryCode": "", //手机验证码
     }
   }),
 }

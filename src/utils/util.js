@@ -26,39 +26,39 @@ const formatTime = (date, fmt = 'yyyy-MM-dd', appendZero = true) => {
   }
 
   return fmt;
-}
+};
 
 const formatNumber = (n) => {
-  n = n.toString()
-  return n[1] ? n : `0${n}`
-}
-
+  n = n.toString();
+  return n[1] ? n : `0${n}`;
+};
 
 const starPhoneNumber = phoneNumber => (!phoneNumber || phoneNumber === '' ? ''
-  : `${phoneNumber.substring(0, 3)}****${phoneNumber.substring(7, 11)}`)
+  : `${phoneNumber.substring(0, 3)}****${phoneNumber.substring(7, 11)}`);
 
-const showToast = (title, icon = 'none', image = '', duration = 2000) => {
+const showToast = (title, duration = 2000, icon = 'none', image = '') => {
   wx.showToast({
     title,
     icon,
     image,
     duration
-  })
-}
+  });
+};
 const constantFilter = (name, value) => {
   const constant = constants[name].find(constant => constant.value = value);
   if (!constant) return value;
   return constant.name || constant.label || value;
-}
+};
 const constantHelper = (name, value) => {
   const constant = constants[name].find(constant => constant.label = value);
   if (!constant) return value;
   return constant.value || '';
-}
+};
+
 export default {
   formatTime,
   starPhoneNumber,
   showToast,
   constantFilter,
   constantHelper
-}
+};

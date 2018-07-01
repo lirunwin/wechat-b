@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="signup container">
+  <div class="signup container" v-if="step !== 0">
     <div class="step">
       <ul>
         <li :class="{active: step === 1}">
@@ -25,7 +25,13 @@
                <input-box v-model.lazy="user.tel" placeholder="手机号码" maxlength="11"></input-box>
              </div>
              <div class="col-12 mb-1">
-               <input-box v-model.lazy="user.veryCode" placeholder="验证码" :sms="true" type="number" maxlength="6"></input-box>
+               <input-box v-model.lazy="user.veryCode"
+                 placeholder="验证码"
+                 :sms="true"
+                 @getCode="getAuthCode"
+                 :tel="user.tel"
+                 type="number"
+                 maxlength="6"></input-box>
              </div>
              <div class="col-12 mb-1">
                <input-box v-model.lazy="user.password" placeholder="密码" type="password" maxlength="30"></input-box>
@@ -36,10 +42,11 @@
            </div>
          </div>
          <div class="card-actions px-0">
-           <button type="submit" class="btn btn-primary btn-block mr-0" href="#" @click="onSubmit">立即注册</button>
+           <button type="submit" class="btn btn-primary btn-block mr-0" href="#"
+             @click="onSignUp">立即注册</button>
          </div>
          <div class="divider"></div>
-         <h5 class="text-primary text-center mb-3">已有账号?立即登录</h5>
+         <h5 class="text-primary text-center mb-3" @click="signUp">已有账号?立即登录</h5>
        </div>
      </div>
       <div class="col-12 step2" v-if="step === 2">
@@ -77,7 +84,9 @@
             </div>
           </div>
           <div class="card-actions px-0 mb-3">
-            <button type="submit" class="btn btn-primary btn-block mr-0" href="#" @click="onSubmit">立即提交</button>
+            <button type="submit" class="btn btn-primary btn-block mr-0" href="#"
+              :disabled="checkSignUpForm"
+              @click="onSubmit">立即提交</button>
           </div>
          </div>
        </div>
@@ -89,7 +98,9 @@
 import InputBox from '@/components/InputBox';
 import Selector from '@/components/Selector';
 import ImageUploader from '@/components/ImageUploader';
-
+import constant from '@/constants';
+import util from '@/utils/util';
+import { mapActions } from 'vuex';
 export default {
   components: {
     InputBox,
@@ -97,7 +108,7 @@ export default {
     ImageUploader
   },
   data: () => ({
-    step: 1,
+    step: 0,
     user: {
       tel: '',
       veryCode: '',
@@ -108,9 +119,54 @@ export default {
     }
   }),
   methods: {
-    onSubmit() {
-      console.log(1);
+    ...mapActions(['getSmsCode', 'signUp']),
+    getAuthCode() {
+      if (constant.regExp.phone.test(this.user.tel)) {
+        this.getSmsCode({
+          tel: this.user.tel,
+          type: 'SIGNUP'
+        })
+      }
+    },
+    onSignUp() {
+      console.log(this.user.tel === '');
+      if (this.user.tel === '') {
+        util.showToast('电话号码不能为空');
+        return;
+      }
+      if (!constant.regExp.phone.test(this.user.tel)) {
+        util.showToast('电话号码有误');
+        return;
+      }
+      if (this.user.veryCode == '') {
+        util.showToast('验证码不能为空');
+        return;
+      }
+      if (this.user.password !== this.user.rePassword) {
+        util.showToast('密码输入不相同');
+        return;
+      }
+      if (this.checkSignUpForm) {
+        this.signUp({
+          tel: this.user.tel, //手机号
+          password: this.user.password, //密码
+          veryCode: this.user.veryCode, //手机验证码
+        });
+      }
     }
+  },
+  computed: {
+    checkSignUpForm() {
+      return !(this.user.tel === '' ||
+        !constant.regExp.phone.test(this.user.tel) ||
+        this.user.veryCode == '' ||
+        this.user.password == '' ||
+        this.user.password !== this.user.rePassword);
+    }
+  },
+  mounted() {
+    console.log(this.$route);
+    this.step = +this.$route.query.step || 1
   }
 }
 </script>

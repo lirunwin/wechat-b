@@ -16,7 +16,7 @@ export default {
   // 这个字段走 app.json
   config: {
     pages: [
-      '^pages/user/sigiup',
+      '^pages/user/signin',
       // '^pages/recruitment/post',
     ], // Will be filled in webpack
     window: {
@@ -24,7 +24,6 @@ export default {
       // navigationBarBackgroundColor: '#acc192',
       // navigationBarTitleText: '懒虫动动兼职平台',
       // navigationBarTextStyle: 'white',
-
 
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -38,22 +37,29 @@ export default {
       // navigationBarTitleText: '懒虫动动',
       // navigationBarTextStyle: 'white',
     },
-    // tabBar: {
-    //   color: '#999',
-    //   selectedColor: '#d22222',
-    //   backgroundColor: '#fff',
-    //   borderStyle: 'black',
-    //   // list: [{
-    //   //   pagePath: 'pages/user/signin',
-    //   //   text: '登录',
-    //   //   iconPath: 'static/assets/news.png',
-    //   //   selectedIconPath: 'static/assets/news-active.png',
-    //   // }, {
-    //   //   pagePath: 'pages/quanzi/list',
-    //   //   text: '圈子',
-    //   //   iconPath: 'static/assets/quanzi.png',
-    //   //   selectedIconPath: 'static/assets/quanzi-active.png',
-    //   // }],
-    // },
+    tabBar: {
+      color: '#999',
+      selectedColor: '#9fb485',
+      backgroundColor: '#fff',
+      borderStyle: 'black',
+      list: [{
+          pagePath: 'pages/recruitment/index',
+          text: '招聘信息',
+          iconPath: 'static/img/tab1.png',
+          selectedIconPath: 'static/img/tab1.png',
+        },
+        {
+          pagePath: 'pages/recruitment/post',
+          iconPath: 'static/img/tab2.png',
+          selectedIconPath: 'static/img/tab2.png',
+        },
+        {
+          pagePath: 'pages/user/center',
+          text: '账户信息',
+          iconPath: 'static/img/tab3.png',
+          selectedIconPath: 'static/img/tab3.png',
+        }
+      ],
+    },
   },
 };

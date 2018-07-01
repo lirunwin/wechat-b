@@ -10,13 +10,17 @@
       <text v-if="unit" class="unit p-1">{{unit}}</text>
     </label>
     <div class="col-auto smsCode btn btn-outline-primary shadow-none border-0 text-dark align-self-stretch d-flex align-items-center justify-content-center"
-      v-if="sms !== null">
-      <span>获取验证码</span>
+      v-if="sms !== null"
+      @click="getCode"
+      >
+      <span>获取验证码{{time != countDown && time ?  time : '' }}</span>
     </div>
   </div>
 </template>
 
 <script>
+import constant from '@/constants';
+import util from '@/utils/util';
 export default {
   props: {
     type: {
@@ -32,17 +36,43 @@ export default {
       type: [String, Boolean],
       default: null
     },
+    tel: String,
     maxlength: {
       type: [String, Number],
       default: 100
     },
     unit: String
   },
+  data: () => ({
+    countDown: constant.smsCountDown,
+    time: 0,
+    disableSms: false
+  }),
   methods: {
     updataVal(val) {
       this.$emit('input', val);
+    },
+    getCode() {
+      if (!constant.regExp.phone.test(this.tel)) {
+        util.showToast('电话号码有误');
+        return;
+      }
+      if (!this.disableSms) {
+        this.$emit('getCode');
+        this.disableSms = true;
+        this.time = this.countDown;
+        let timer = setInterval(() => {
+          this.time--
+            console.log(this.time);
+          if (this.time === 0) {
+            this.time = this.countDown;
+            this.disableSms = false
+            clearInterval(timer)
+          }
+        }, 1000)
+      }
     }
-  }
+  },
 }
 </script>
 

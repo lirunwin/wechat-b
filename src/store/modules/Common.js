@@ -1,5 +1,5 @@
 import CommonService from '@/services/CommonService';
-
+import util from '@/utils/util';
 const state = {
   positions: [],
   cities: []
@@ -8,7 +8,7 @@ const getters = {
   positions: state => state.positions,
   cities: state => state.cities,
   positionParents: (state) => {
-    const temp = state.positions.filter(position => position.pid === '0' || position.pid === '')
+    const temp = state.positions.filter(position => position.pid === '0' || position.pid === '');
     // console.log(JSON.stringify(state.positions, null, 2));
     return temp;
   },
@@ -31,9 +31,19 @@ const actions = {
       return cities;
     }));
   },
-  // uploadFile(context, payload) {
-  //   return CommonService.uploadFile(payload).then((res => res));
-  // }
+  getSmsCode(context, {tel, type}) {
+    let codeType = util.constantHelper('smsType', type);
+    if (codeType) {
+      return CommonService.getSmsCode({tel, codeType}).then(res => {
+        console.log(res);
+      });
+    } else {
+      console.log('验证码codeType错误');
+    }
+  }
+  uploadFile(context, payload) {
+    return CommonService.uploadFile(payload).then((res => res));
+  }
 };
 export default {
   state,
