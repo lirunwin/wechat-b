@@ -9,7 +9,8 @@
       >
       <text v-if="unit" class="unit p-1">{{unit}}</text>
     </label>
-    <div class="col-auto smsCode btn btn-outline-primary shadow-none align-self-stretch d-flex align-items-center justify-content-center" v-if="sms">
+    <div class="col-auto smsCode btn btn-outline-primary shadow-none border-0 text-dark align-self-stretch d-flex align-items-center justify-content-center"
+      v-if="sms !== null">
       <span>获取验证码</span>
     </div>
   </div>
@@ -27,7 +28,10 @@ export default {
       default: '请输入'
     },
     value: [String, Number],
-    sms: [String, Boolean],
+    sms: {
+      type: [String, Boolean],
+      default: null
+    },
     maxlength: {
       type: [String, Number],
       default: 100

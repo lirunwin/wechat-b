@@ -14,8 +14,8 @@ module.exports = [
     }
   },
   {
-    path: '/pages/user/resetpwd',
-    name: 'ResetPwd',
+    path: '/pages/user/changepwd',
+    name: 'ChangePwd',
     config: {
       navigationBarTitleText: '修改密码'
     }

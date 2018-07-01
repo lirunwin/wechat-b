@@ -74,12 +74,6 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/scss/common";
-.avatar {
-    width: 60px;
-    height: 60px;
-    flex: 0 0 60px;
-    border-radius: 50%;
-}
 .recruit-list {
     line-height: 1.25em;
 

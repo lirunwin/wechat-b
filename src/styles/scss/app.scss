@@ -6,25 +6,6 @@
 button::after {
   border: none;
 }
-
-.size-1 {
-  font-size: $size-1 !important;
-}
-.size-2 {
-  font-size: $size-2 !important;
-}
-.size-3 {
-  font-size: $size-3 !important;
-}
-.size-4 {
-  font-size: $size-4 !important;
-}
-.size-5 {
-  font-size: $size-5 !important;
-}
-.caret {
-    @include caret;
-}
 Page {
   background-color: map-get($primary,color);
   box-sizing: border-box;
@@ -46,4 +27,34 @@ textarea {
   padding: 0.5em;
   font-size: 16px;
   width: 100%;
+}
+.size-1 {
+  font-size: $size-1 !important;
+}
+.size-2 {
+  font-size: $size-2 !important;
+}
+.size-3 {
+  font-size: $size-3 !important;
+}
+.size-4 {
+  font-size: $size-4 !important;
+}
+.size-5 {
+  font-size: $size-5 !important;
+}
+.caret {
+    @include caret;
+}
+.avatar {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
+    border-radius: 50%;
+}
+.avatar-lg {
+  width: 90px;
+  height: 90px;
+  flex: 0 0 90px;
+  border-radius: 50%;
 }
