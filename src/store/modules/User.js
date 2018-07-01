@@ -37,7 +37,7 @@ const actions = {
     context.commit('logedIn', false);
     wx.removeStorageSync(constant.userKeyName);
     return UserService.logout(payload).then(((res) => {
-      console.log(res);
+      util.showToast(res.msg);
       return res;
     }));
   },

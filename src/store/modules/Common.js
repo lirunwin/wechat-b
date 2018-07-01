@@ -40,7 +40,7 @@ const actions = {
     } else {
       console.log('验证码codeType错误');
     }
-  }
+  },
   uploadFile(context, payload) {
     return CommonService.uploadFile(payload).then((res => res));
   }

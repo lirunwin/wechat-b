@@ -46,7 +46,7 @@
              @click="onSignUp">立即注册</button>
          </div>
          <div class="divider"></div>
-         <h5 class="text-primary text-center mb-3" @click="signUp">已有账号?立即登录</h5>
+         <h5 class="text-primary text-center mb-3" @click="$router.back()">已有账号?立即登录</h5>
        </div>
      </div>
       <div class="col-12 step2" v-if="step === 2">
