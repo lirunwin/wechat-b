@@ -49,9 +49,7 @@ export default {
   data: () => ({
     logo: require('@/assets/img/logo.png'),
     user: {
-      loginType: 'PASSWORD',
-      account: '16602807230',
-      password: '123123'
+      loginType: 'PASSWORD'
     }
   }),
   methods: {

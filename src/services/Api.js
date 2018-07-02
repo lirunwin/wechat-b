@@ -16,7 +16,7 @@ request.interceptors.request.use((request) => {
   wx.showNavigationBarLoading();
   wx.showLoading({
     title: '加载中',
-  })
+  });
   return request;
 });
 
@@ -24,7 +24,7 @@ request.interceptors.response.use(
   (response, promise) => {
     // console.log({ response });
     wx.hideNavigationBarLoading();
-    wx.hideLoading()
+    wx.hideLoading();
     const res = response.data;
     if (res.msg === 'WSXX') {
       return promise.resolve(res);
@@ -43,7 +43,7 @@ request.interceptors.response.use(
         content: res.code === 100002 ? '用户名或密码错误' : '登录超时请重新登录，请重新登录'
       }).then(() => {
         wx.redirectTo({
-          url: '../login/login',
+          url: '../user/signin',
         });
       });
     }

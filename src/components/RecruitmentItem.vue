@@ -24,7 +24,6 @@ export default {
   props: ['list'],
   methods: {
     navigageTo(id) {
-      // console.log(id);
       this.$router.push({ path: '/pages/recruitment/detail', query: { id } })
     }
   }

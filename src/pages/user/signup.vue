@@ -129,9 +129,6 @@ export default {
     },
     company: {},
     location: {}
-    //     "provinceid":"51",
-    // "cityid":"5101",
-    // "countyid":"510132",
   }),
   methods: {
     ...mapActions(['getSmsCode', 'signUp', 'updateUserInfo', 'getUserInfo']),

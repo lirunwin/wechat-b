@@ -60,9 +60,7 @@ export default {
   },
   mounted() {
     if (!this.isLogedIn) {
-      wx.redirectTo({
-        url: '/pages/user/signin'
-      });
+      this.$router.replace({ path: '/pages/user/signin' });
       return;
     }
     this.fetchRecruitments(this.page)
