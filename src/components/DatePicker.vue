@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="dateChange" :start="today" mode="date" :value="date" class="py-0 datepicker">
+      <picker @change="dateChange" :start="today" mode="date" :value="value || date" class="py-0 datepicker">
         <div class="row">
           <view class="col pr-0 py-1 text-truncate">
-              {{date}}
+              {{value || date}}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
@@ -35,7 +35,8 @@ export default {
     appendZero: {
       type: Boolean,
       default: true
-    }
+    },
+    value: String
   },
   data: () => ({
     today: '',

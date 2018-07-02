@@ -58,3 +58,12 @@ textarea {
   flex: 0 0 90px;
   border-radius: 50%;
 }
+.no-content {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $material-color-grey-600;
+  font-size: $size-1;
+}

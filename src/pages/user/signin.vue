@@ -15,7 +15,7 @@
       </div>
       <div class="col-12 px-0">
         <div class="px-3">
-          <input-box placeholder="密码" type="password" v-model.lazy="user.password"></input-box>
+          <input-box placeholder="密码" type="password" v-model.lazy="user.password" :sms="user.loginType === 'PASSWORD' ? null : ''" :tel="user.account"></input-box>
         </div>
       </div>
       <div class="col-12 px-0 pt-3">
@@ -24,7 +24,7 @@
             <div class="btn btn-primary btn-block shadow-xs col-12 signin-btn" @click="onSignIn">登录</div>
           </div>
           <div class="row size-2 pt-1">
-            <div class="col px-0" @click="navigageToFindPwd">忘记密码</div>
+            <div class="col px-0" @click="switchSignInWay">{{user.loginType === 'PASSWORD' ? '短信登录' : '账号登录'}}</div>
             <div class="col px-0 text-right" @click="navigageToSignUp">马上注册</div>
           </div>
         </div>
@@ -50,8 +50,8 @@ export default {
     logo: require('@/assets/img/logo.png'),
     user: {
       loginType: 'PASSWORD',
-      account: '',
-      password: ''
+      account: '16602807230',
+      password: '123123'
     }
   }),
   methods: {
@@ -70,19 +70,25 @@ export default {
         util.showToast('密码不能为空');
         return;
       }
-      this.signIn(this.user).then(res => {
-        console.log(res);
-      }).catch(res => {
-        wx.setStorageSync(constant.userKeyName, 'rtARpG9wP94NckMoEBJB3lPjUouPhZLzpRClY/NaNm2snHsPsOdkOhxmHNderBAV2Yd8zW3cZhpUaXuKSHIWfQ==');
-        this.$store.commit('logedIn');
-        this.$router.push({ path: '/pages/recruitment/index', isTab: true })
-      });
+      this.signIn(this.user)
+        .then(res => {
+          this.$store.commit('logedIn');
+          wx.setStorageSync(constant.userKeyName, res.data || res);
+          if (res.msg === 'WSXX') {
+            this.$router.push({ path: '/pages/user/signup', query: { step: 2 } })
+          } else {
+            this.$router.push({ path: '/pages/recruitment/index', isTab: true })
+          }
+        })
     },
-    navigageToFindPwd() {
-      this.$router.push({ path: '/pages/user/findpwd' })
-    },
+    // navigageToFindPwd() {
+    //   this.$router.push({ path: '/pages/user/findpwd' })
+    // },
     navigageToSignUp() {
       this.$router.push({ path: '/pages/user/signup', query: { step: 1 } })
+    },
+    switchSignInWay() {
+      this.user.loginType === 'PASSWORD' ? this.user.loginType = 'TELCODE' : this.user.loginType = 'PASSWORD';
     }
   }
 }

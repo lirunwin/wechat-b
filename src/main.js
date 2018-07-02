@@ -16,7 +16,7 @@ export default {
   // 这个字段走 app.json
   config: {
     pages: [
-      // '^pages/user/signup',
+      // '^pages/user/signin',
       '^pages/recruitment/post',
     ], // Will be filled in webpack
     window: {
@@ -43,22 +43,22 @@ export default {
       backgroundColor: '#fff',
       borderStyle: 'black',
       list: [{
-          pagePath: 'pages/recruitment/index',
-          text: '招聘信息',
-          iconPath: 'static/img/tab1.png',
-          selectedIconPath: 'static/img/tab1.png',
-        },
-        {
-          pagePath: 'pages/recruitment/post',
-          iconPath: 'static/img/tab2.png',
-          selectedIconPath: 'static/img/tab2.png',
-        },
-        {
-          pagePath: 'pages/user/center',
-          text: '账户信息',
-          iconPath: 'static/img/tab3.png',
-          selectedIconPath: 'static/img/tab3.png',
-        }
+        pagePath: 'pages/recruitment/index',
+        text: '招聘信息',
+        iconPath: 'static/img/tab1.png',
+        selectedIconPath: 'static/img/tab1_active.png',
+      },
+      {
+        pagePath: 'pages/recruitment/post',
+        iconPath: 'static/img/tab2.png',
+        selectedIconPath: 'static/img/tab2.png',
+      },
+      {
+        pagePath: 'pages/user/center',
+        text: '账户信息',
+        iconPath: 'static/img/tab3.png',
+        selectedIconPath: 'static/img/tab3_active.png',
+      }
       ],
     },
   },

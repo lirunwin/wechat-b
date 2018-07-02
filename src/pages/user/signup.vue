@@ -55,38 +55,48 @@
             <div class="row">
               <div class="col-12 mb-1">
                 <h5>企业名称</h5>
-                <input-box v-model.lazy="user.tel" placeholder="12" maxlength="11"></input-box>
+                <input-box v-model.lazy="company.comname" placeholder="企业名称"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>联系人</h5>
-                <input-box v-model.lazy="user.veryCode" placeholder="验证码" type="number" maxlength="6"></input-box>
+                <input-box v-model.lazy="company.contactsname" placeholder="请输入联系人姓名" maxlength="6"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>联系电话</h5>
-                <input-box v-model.lazy="user.password" placeholder="密码" type="password" maxlength="30"></input-box>
+                <input-box v-model.lazy="company.contactstel" placeholder="请输入联系人电话" type="number" maxlength="30"></input-box>
+              </div>
+              <div class="col-12 mb-1">
+                <h5>E-mail</h5>
+                <input-box v-model.lazy="company.comemial" placeholder="请输入E-mail"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>公司电话</h5>
-                <input-box v-model.lazy="user.rePassword" placeholder="确认密码" type="password" maxlength="30"></input-box>
+                <input-box v-model.lazy="company.officephone" placeholder="请输入公司电话" type="number" maxlength="12"></input-box>
               </div>
               <div class="col-12 mb-1">
                 <h5>公司地址</h5>
-                <selector></selector>
+                <city-selector v-model="location"></city-selector>
+                <div class="pt-1">
+                  <input-box v-model.lazy="company.address" placeholder="请输入详细地址"></input-box>
+                </div>
               </div>
               <div class="col-12 mb-1">
                 <h5>营业执照(必须上传)</h5>
-                <image-uploader></image-uploader>
+                <image-uploader v-model="company.businesslicensefile"></image-uploader>
               </div>
               <div class="col-12 mb-1">
                 <h5>公司简介</h5>
-                <input-box v-model.lazy="user.rePassword" placeholder="确认密码" tyep="password" maxlength="30"></input-box>
+                <div class="row">
+                  <div class="col px-0">
+                    <textarea placeholder="公司简介" v-model.lazy="company.introduce"></textarea>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div class="card-actions px-0 mb-3">
             <button type="submit" class="btn btn-primary btn-block mr-0" href="#"
-              :disabled="checkSignUpForm"
-              @click="onSubmit">立即提交</button>
+              @click="onSaveCompany">立即提交</button>
           </div>
          </div>
        </div>
@@ -96,7 +106,7 @@
 
 <script>
 import InputBox from '@/components/InputBox';
-import Selector from '@/components/Selector';
+import CitySelector from '@/components/CitySelector';
 import ImageUploader from '@/components/ImageUploader';
 import constant from '@/constants';
 import util from '@/utils/util';
@@ -104,7 +114,7 @@ import { mapActions } from 'vuex';
 export default {
   components: {
     InputBox,
-    Selector,
+    CitySelector,
     ImageUploader
   },
   data: () => ({
@@ -116,10 +126,15 @@ export default {
       rePassword: '',
       identityType: '',
       recommendUserId: ''
-    }
+    },
+    company: {},
+    location: {}
+    //     "provinceid":"51",
+    // "cityid":"5101",
+    // "countyid":"510132",
   }),
   methods: {
-    ...mapActions(['getSmsCode', 'signUp']),
+    ...mapActions(['getSmsCode', 'signUp', 'updateUserInfo', 'getUserInfo']),
     getAuthCode() {
       if (constant.regExp.phone.test(this.user.tel)) {
         this.getSmsCode({
@@ -129,7 +144,6 @@ export default {
       }
     },
     onSignUp() {
-      console.log(this.user.tel === '');
       if (this.user.tel === '') {
         util.showToast('电话号码不能为空');
         return;
@@ -147,12 +161,65 @@ export default {
         return;
       }
       if (this.checkSignUpForm) {
+        if (this.company.tel === '') {
+          util.showToast('电话号码不能为空');
+          return;
+        }
         this.signUp({
           tel: this.user.tel, //手机号
           password: this.user.password, //密码
           veryCode: this.user.veryCode, //手机验证码
         });
       }
+    },
+    onSaveCompany() {
+      if (this.checkCompany) {
+        this.company.provinceid = this.location.province;
+        this.company.cityid = this.location.city;
+        this.company.countyid = this.location.county;
+        this.updateUserInfo(this.company)
+          .then(res => {
+            util.showToast('操作成功');
+            setTimeout(() => {
+              this.$router.go()
+            }, 2000)
+          });
+      }
+    },
+    checkCompany() {
+      if (!this.company.comname) {
+        util.showToast('公司名不能为空');
+        return false;
+      }
+      if (!this.company.comemial) {
+        util.showToast('公司E-mail不能为空');
+        return false;
+      }
+      if (!this.company.contactsname) {
+        util.showToast('公司联系人不能为空');
+        return false;
+      }
+      if (!this.company.contactstel) {
+        util.showToast('公司联系人电话不能为空');
+        return false;
+      }
+      if (!this.location.count || !this.company.address) {
+        util.showToast('详细地址有误');
+        return false;
+      }
+      if (!this.company.officephone) {
+        util.showToast('公司电话不能为空');
+        return false;
+      }
+      if (!this.company.businesslicensefile) {
+        util.showToast('请上传公司营业执照');
+        return false;
+      }
+      if (!this.company.introduce) {
+        util.showToast('公司介绍不能为空');
+        return false;
+      }
+      return true;
     }
   },
   computed: {
@@ -162,11 +229,29 @@ export default {
         this.user.veryCode == '' ||
         this.user.password == '' ||
         this.user.password !== this.user.rePassword);
+    },
+    imgUrl() {
+      return constant.baseURL + this.company.businesslicensefile;
     }
   },
   mounted() {
-    console.log(this.$route);
-    this.step = +this.$route.query.step || 1
+    // console.log(this.$route);
+    let step = +this.$route.query.step || 1
+    if (step === 2) {
+      this.getUserInfo()
+        .then(res => {
+          delete res.lastupdatetime;
+          delete res.createtime;
+          this.location = {
+            province: res.provinceid,
+            city: res.cityid,
+            county: res.countyid
+          }
+          console.log(this.location);
+          this.company = res
+        })
+    }
+    this.step = step;
   }
 }
 </script>

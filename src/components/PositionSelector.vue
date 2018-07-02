@@ -1,10 +1,10 @@
 <template lang="html">
 <div class="row">
   <div class="col-6 pr-2">
-    <selector v-model="pid" :items="positionParents" returnValue></selector>
+    <selector v-model="pid" :items="positionParents" returnValue="id"></selector>
   </div>
   <div class="col-6 pl-2">
-    <selector v-model="cid" :items="positionChildren" returnValue test="222"></selector>
+    <selector v-model="cid" :items="positionChildren" returnValue="id"></selector>
   </div>
 </div>
 </template>
@@ -42,7 +42,7 @@ export default {
     }
   },
   watch: {
-    pid: function(newPid) {
+    pid: function (newPid) {
       if (newPid) {
         this.position.positionParentId = newPid;
         this.emitValue();
@@ -57,7 +57,7 @@ export default {
           })
       }
     },
-    cid: function(newCid) {
+    cid: function (newCid) {
       if (newCid) {
         this.position.positionid = newCid;
         this.emitValue();

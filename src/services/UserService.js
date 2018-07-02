@@ -8,5 +8,9 @@ export default {
 
   logout: () => Api.post('user/exitOut'),
 
-  changePwd: (data) => Api.post('user/setPassword', data)
+  changePwd: data => Api.post('user/setPassword', data),
+
+  updateUserInfo: data => Api.post('comp/saveCompany', data),
+
+  getUserInfo: () => Api.post('comp/getCompanyinfo')
 };

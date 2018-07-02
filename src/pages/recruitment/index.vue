@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="recruitments container">
-    <recruitment-item :list="recruitments"></recruitment-item>
+    <recruitment-item :list="recruitments" v-if="recruitments.length"></recruitment-item>
+    <div v-if="!recruitments.length" class="no-content">暂无信息</div>
     <done-load v-if="noMoreData" :done="noMoreData"></done-load>
   </div>
 </template>

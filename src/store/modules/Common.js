@@ -1,5 +1,7 @@
 import CommonService from '@/services/CommonService';
 import util from '@/utils/util';
+import { unionBy } from 'lodash';
+
 const state = {
   positions: [],
   cities: []
@@ -15,7 +17,10 @@ const getters = {
 };
 const mutations = {
   updatePositions: (state, payload) => state.positions = state.positions.concat(payload),
-  updateCities: (state, payload) => state.cities = state.cities.concat(payload),
+  updateCities: (state, payload) => {
+    const unionedArray = unionBy(payload, state.cities, 'id')
+    state.cities = unionedArray;
+  }
 };
 const actions = {
   getPositions(context, payload) {
@@ -31,17 +36,17 @@ const actions = {
       return cities;
     }));
   },
-  getSmsCode(context, {tel, type}) {
-    let codeType = util.constantHelper('smsType', type);
+  getSmsCode(context, { tel, type }) {
+    const codeType = util.constantHelper('smsType', type);
     if (codeType) {
-      return CommonService.getSmsCode({tel, codeType}).then(res => {
+      return CommonService.getSmsCode({ tel, codeType }).then((res) => {
         console.log(res);
       });
-    } else {
-      console.log('验证码codeType错误');
     }
+    console.log('验证码codeType错误');
   },
   uploadFile(context, payload) {
+    console.log(payload);
     return CommonService.uploadFile(payload).then((res => res));
   }
 };

@@ -88,7 +88,9 @@ export default {
         font-weight: 600;
     }
     input {
-        padding: 8px 2em 8px 0;
+        padding-right: 2em;
+        height: 40px;
+        line-height: 40px;
     }
     .smsCode {
         font-size: 14px;

@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="row align-items-center">
-    <div class="px-0 col-7 img-preview" :style="{background: bgImg}">
+    <div class="px-0 col-7 img-preview"
+      v-if="bgImg"
+      @click="previewImage"
+      :style="{'background-image': 'url('+ bgImg + ')'}">
     </div>
     <div class="text-center col-5">
       <label class="btn btn-primary" @click="chooseFile" :loading="loading">
@@ -11,14 +14,17 @@
         accept="image/*"
         @change="onFilePicked">
       </label>
-      {{bgImg.background}}
     </div>
   </div>
 </template>
 
 <script>
-import promiseWX from '@/utils/promiseWX'
+import promiseWX from '@/utils/promiseWX';
+import constant from '@/constants';
 export default {
+  props: {
+    value: String
+  },
   data: () => ({
     bgImg: require('@/assets/img/img_placeholder.gif'),
     loading: false
@@ -31,15 +37,34 @@ export default {
           sourceType: ['album', 'camera'],
         })
         .then(res => {
-          console.log(res);
-          this.bgImg = res.tempFilePaths[0];
+          let image = res.tempFilePaths[0]
+          this.bgImg = image;
           this.loading = true;
-          return res;
+          return image;
         })
-        .then(res => promiseWX.previewImage({
-          urls: res.tempFilePaths
-        }))
+        .then(image => {
+          return promiseWX.uploadFile({
+              url: constant.fileUploadUrl, //仅为示例，非真实的接口地址
+              filePath: image,
+              name: 'file',
+              formData: {
+                'user': 'test'
+              }
+            })
+            .then(res => {
+              let imgUrl = JSON.parse(res.data)
+                .data.src
+              this.$emit('input', imgUrl);
+            })
+        })
     },
+    previewImage() {
+      if (this.image !== null) {
+        promiseWX.previewImage({
+          urls: [this.bgImg]
+        })
+      }
+    }
     // onFilePicked(event) {
     //   this.loading = true;
     //   const files = event.target.files;
@@ -66,6 +91,13 @@ export default {
     //     });
     //
     // }
+  },
+  watch: {
+    value(newValue, oldValue) {
+      if (newValue && !oldValue) {
+        this.bgImg = constant.baseURL + newValue;
+      }
+    }
   }
 }
 </script>

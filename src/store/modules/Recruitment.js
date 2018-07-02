@@ -81,8 +81,9 @@ const mutations = {
 const actions = {
   fetchRecruitments({ commit }, payload) {
     return RecruitmentService.fetchRecruitments(payload).then((recruitments) => {
+      // console.log({ recruitments });
       commit('updateRecruitments', recruitments);
-      return recruitments;
+      return recruitments || [];
     });
   },
   saveRecruitment(context, payload) {

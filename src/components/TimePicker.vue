@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="timeChange" mode="time" :value="time" class="py-0 timepicker">
+      <picker @change="timeChange" mode="time" :value="value || time" class="py-0 timepicker">
         <div class="row">
           <view class="col pr-0 py-1 text-truncate">
-              {{time}}
+              {{value || time}}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
@@ -27,7 +27,8 @@ export default {
     placeholder: {
       type: String,
       default: '请选择'
-    }
+    },
+    value: String
   },
   data: () => ({
     now: utils.formatTime(new Date(), "hh:mm"),

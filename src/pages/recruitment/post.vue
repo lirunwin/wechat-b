@@ -11,7 +11,7 @@
       </div>
       <div class="col-12 mb-1">
         <h5>工作性质</h5>
-        <radio-boxes :items="jobNatures" v-model="post.jobnature"></radio-boxes>
+        <radio-boxes :items="jobNatures" v-model="post.jobnature" returnValue></radio-boxes>
       </div>
       <div class="col-12 mb-1">
         <h5>拟招聘人数</h5>
@@ -149,7 +149,6 @@ export default {
     wageMode: constant.wageMode,
     location: {},
     position: {},
-    // jobNature: '',
     jobDate: {
       start: '',
       end: ''
@@ -158,32 +157,7 @@ export default {
       start: '',
       end: ''
     },
-    post: {
-      title: "",
-      positionParentId: "", //行业Id
-      positionid: "", //职位Id
-      jobnature: "", //信息类型，固定传：PRACTICE
-      peoplenumber: "", //招聘人数
-      jobCycle: "", //兼职周期，开始和结束，格式必须一样
-      jobPeriod: "", //工作时段
-      education: "", //学历信息，如果学历不限，保存时需删除该字段
-      jobsex: "", //性别，如果性别不限，保存时需删除该字段
-      wagegrant: "", //工资单位，固定传：SELF
-      wageclearing: "", //工资结算
-      wagemode: "", //工资模式
-      wagebegin: "", //薪资范围 开始
-      wageend: "", //薪资范围 结束
-      wagebase: "", //基本工资
-      wagecommission: "", //工资提成
-      commissionunit: "", //提成单位（单/个）
-      provinceid: "", //省id
-      cityid: "", //城市id
-      countyid: "", //区县
-      address: "", //工作详细地址
-      workdescription: "",
-      jobrequirements: "",
-      endtime: "" //招聘结束时间
-    }
+    post: {}
   }),
   computed: {
     jobCycle() {
@@ -283,67 +257,29 @@ export default {
   },
   mounted() {
     let mode = this.$route.query.mode;
-    if (mode !== 'edit') {
+    if (mode === 'edit') {
       wx.setNavigationBarTitle({
         title: '修改招聘信息'
       })
-      // this.fetchRecruitmentDetail({ id: this.$route.query.id });
-      // let detail = this.recruitmentsDetails.find(detail => detail.id = this.$route.query.id);
-      let detail = {
-        "id": "1525552632891189",
-        "comid": "1525551681067221",
-        "createuserid": "1525405461092662",
-        "createtime": "2018-05-06",
-        "lastupdatetime": 1525552633000,
-        "title": "微商招代理宝妈白领创业投资首选",
-        "positionid": "1525450582725634",
-        "jobnature": "兼职",
-        "jobperiodbegin": 540,
-        "jobperiodend": 960,
-        "jobsex": null,
-        "peoplenumber": 20,
-        "recruitednumber": null,
-        "mineducation": "初中/中专",
-        "jobbegintime": "2018-05-06",
-        "jobendtime": "3918-08-01",
-        "provinceid": "51",
-        "cityid": "5101",
-        "countyid": "510102",
-        "address": "AAAAA成都市武侯祠博物馆1212222",
-        "longitude": 104.055837,
-        "latitude": 30.652549,
-        "endtime": null,
-        "wageclearing": "日结",
-        "wagebegin": 80,
-        "wageend": 150,
-        "wagemode": "底薪+提成",
-        "wagegrant": null,
-        "commissionunit": null,
-        "wagebase": 100,
-        "wagecommission": 0,
-        "jobstatus": "等待审核",
-        "checkid": null,
-        "workdescription": "工作地址：双流综合保税区\n报名编辑:编辑短信姓名+年龄+小时工到王老师手机上\n全程面试无任何中介费，欢迎求职者了解咨询！",
-        "jobrequirements": "工作地址：双流综合保税区\n报名编辑:编辑短信姓名+年龄+小时工到王老师手机上\n全程面试无任何中介费，欢迎求职者了解咨询！",
-        "positionName": "校园代理",
-        "positionParentId": "1525450582631320",
-        "positionParentName": "特色职位",
-        "provinceName": "四川省",
-        "cityName": "成都市",
-        "countyName": null,
-        "checkRemark": null,
-        "jobPeriod": "05:40 - 09:60",
-        "jobCycle": "2018.5.6 - 3918.8.1",
-        "collectionId": null,
-        "deliveryStatus": null,
-        "introduce": null,
-        "companyInfo": null,
-        "commission": "",
-        "sexName": "",
-        "endTimeFmat": "",
-        "createTimeFmat": "2018-05-06",
-        "pid": "1525552632891189"
-      }
+      this.fetchRecruitmentDetail({ id: this.$route.query.id });
+      let detail = this.recruitmentsDetails.find(detail => detail.id = this.$route.query.id);
+
+      this.jobNatures = this.jobNatures.map(nature => {
+        if (nature.value === detail.jobnature || nature.name === detail.jobnature) {
+          nature.checked = true
+        } else {
+          delete nature.checked
+        }
+        return nature;
+      })
+      this.genter ? '' : this.gender = this.gender.map(gender => {
+        if (gender.value === detail.jobsex || gender.name === detail.jobsex) {
+          gender.checked = true
+        } else {
+          delete gender.checked
+        }
+        return gender;
+      })
       // console.log(JSON.stringify(detail, null, 2));
       this.position = {
         positionParentId: detail.positionParentId,

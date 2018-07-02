@@ -4,13 +4,13 @@
       <div class="col-12">
         <img
           class="avatar-lg"
-          src="http://www.qqzhi.com/uploadpic/2014-05-07/130323598.jpg" alt="">
+          :src="userInfo.avatar || logo" alt="">
       </div>
     </div>
     <div class="row pb-4">
-      <div class="col-12 pt-1 size-4">按实际的卡萨的咨询有限公司</div>
-      <div class="col-12 pt-1 size-3">账号：19239291312</div>
-      <div class="col-12 pt-1 size-3 text-muted">注册时间：2018年7月1日21:34:30</div>
+      <div class="col-12 pt-1 size-4">{{ userInfo.comname }}</div>
+      <div class="col-12 pt-1 size-3">账号：{{ userInfo.contactstel }}</div>
+      <div class="col-12 pt-1 size-3 text-muted">注册时间：{{userInfo.createtime}}</div>
     </div>
     <div class="row pb-4">
       <div class="col-12">
@@ -28,29 +28,37 @@
 
 <script>
 // import Tabbar from '@/components/Tabbar';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import util from '@/utils/util';
 import wx from '@/utils/wx';
 export default {
-  // components: {
-  //   TabBar
-  // },
+  data: () => ({
+    logo: require('@/assets/img/logo.png')
+  }),
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'getUserInfo']),
     editUserInfo() {
-      this.$router.replace({ path: '/pages/user/signup', query: { step: 2 } });
+      this.$router.push({ path: '/pages/user/signup', query: { step: 2 } });
     },
     onLogout() {
-      this.logout().then(() => {
-        setTimeout(() => {
-          this.$router.replace({ path: '/pages/user/signin' });
-        }, 2000)
-      }).catch(() => {
-        setTimeout(() => {
-          this.$router.replace({ path: '/pages/user/signin' });
-        }, 2000)
-      });
+      this.logout()
+        .then(() => {
+          setTimeout(() => {
+            this.$router.replace({ path: '/pages/user/signin' });
+          }, 2000)
+        })
+        .catch(() => {
+          setTimeout(() => {
+            this.$router.replace({ path: '/pages/user/signin' });
+          }, 2000)
+        });
     }
+  },
+  mounted() {
+    this.getUserInfo()
   }
 }
 </script>
