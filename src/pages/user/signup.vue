@@ -28,7 +28,7 @@
                <sms-box v-model="user.veryCode"
                  placeholder="验证码"
                  :sms="true"
-                 @getCode="getAuthCode"
+                 smsType="SIGNUP"
                  :tel="user.tel"
                  type="number"
                  maxlength="6"></sms-box>
@@ -133,15 +133,7 @@ export default {
     location: {}
   }),
   methods: {
-    ...mapActions(['getSmsCode', 'signUp', 'updateUserInfo', 'getUserInfo']),
-    getAuthCode() {
-      if (constant.regExp.phone.test(this.user.tel)) {
-        this.getSmsCode({
-          tel: this.user.tel,
-          type: 'SIGNUP'
-        })
-      }
-    },
+    ...mapActions(['signUp', 'updateUserInfo', 'getUserInfo']),
     onSignUp() {
       if (this.user.tel === '') {
         util.showToast('电话号码不能为空');

@@ -15,23 +15,26 @@
     <div class="row pb-4">
       <div class="col-12">
         <div class="px-3">
-          <div class="btn btn-primary btn-block" @click="editUserInfo">修改信息</div>
+          <div class="btn btn-primary btn-block" @click="changePwd">修改密码</div>
         </div>
         <div class="px-3 mt-2">
           <div class="btn btn-outline-primary btn-block" @click="onLogout">退出登录</div>
         </div>
       </div>
     </div>
-    <!-- <tabbar></tabbar> -->
+    <tab-bar></tab-bar>
   </div>
 </template>
 
 <script>
-// import Tabbar from '@/components/Tabbar';
 import { mapActions, mapGetters } from 'vuex';
 import util from '@/utils/util';
+import TabBar from '@/components/TabBar';
 import wx from '@/utils/wx';
 export default {
+  components: {
+    TabBar
+  },
   data: () => ({
     logo: require('@/assets/img/logo.png')
   }),
@@ -40,8 +43,8 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
-    editUserInfo() {
-      this.$router.push({ path: '/pages/user/signup', query: { step: 2 } });
+    changePwd() {
+      this.$router.push({ path: '/pages/user/changepwd' });
     },
     onLogout() {
       this.logout()

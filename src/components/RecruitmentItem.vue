@@ -6,14 +6,14 @@
         <div class="col-auto text-secondary">{{item.jobstatus}}</div>
       </div>
       <div class="row align-items-end section-middle">
-        <div class="col text-muted">{{item.jobnature + ' ︱ '}}{{item.wageclearing + ' ︱ '}}{{item.wagebase}}元/天 </div>
+        <div class="col text-muted">{{item.jobnature ? item.jobnature + ' ︱ ' : '' }}{{ item.wageclearing ? item.wageclearing + ' ︱ ' : ''}}{{item.wagebase || 0}}元/天 </div>
         <div class="col-auto" v-if="item.waitCount">待处理
           <span class="font-weight-bold pl-1 size-3 text-secondary">{{item.waitCount}}</span>
         </div>
       </div>
       <div class="row align-items-end section-bottom">
         <div class="col text-muted">发布时间：{{item.createtime}}</div>
-        <div class="col-auto font-weight-bold text-secondary">拟招募({{item.peoplenumber}}) ︱ 已招募({{item.recruitedCount ? item.recruitedCount : 0}})</div>
+        <div class="col-auto font-weight-bold text-secondary">拟招募({{item.peoplenumber || 0}}) ︱ 已招募({{item.recruitedCount ? item.recruitedCount : 0}})</div>
       </div>
     </div>
   </div>

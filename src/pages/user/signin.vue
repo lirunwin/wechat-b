@@ -26,9 +26,16 @@
           <div class="row">
             <div class="btn btn-primary btn-block col-12 signin-btn" @click="onSignIn">登录</div>
           </div>
-          <div class="row size-2 pt-1">
-            <div class="col px-0" @click="switchSignInWay">{{user.loginType === 'PASSWORD' ? '短信登录' : '账号登录'}}</div>
-            <div class="col px-0 text-right" @click="navigageToSignUp">马上注册</div>
+          <div class="row size-2">
+            <div class="col px-0">
+              <div class="py-1 d-inline-block"
+                @click="switchSignInWay">
+                {{user.loginType === 'PASSWORD' ? '短信登录' : '账号登录'}}
+              </div>
+            </div>
+            <div class="col px-0 text-right">
+              <div class="py-1 d-inline-block" @click="navigageToSignUp">马上注册</div>
+            </div>
           </div>
         </div>
       </div>
@@ -82,7 +89,7 @@ export default {
           if (res.msg === 'WSXX') {
             this.$router.push({ path: '/pages/user/signup', query: { step: 2 } })
           } else {
-            this.$router.push({ path: '/pages/recruitment/index', isTab: true })
+            this.$router.push({ path: '/pages/recruitment/index' })
           }
         })
     },

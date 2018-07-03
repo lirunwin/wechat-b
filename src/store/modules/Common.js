@@ -18,7 +18,7 @@ const getters = {
 const mutations = {
   updatePositions: (state, payload) => state.positions = state.positions.concat(payload),
   updateCities: (state, payload) => {
-    const unionedArray = unionBy(payload, state.cities, 'id')
+    const unionedArray = unionBy(payload, state.cities, 'id');
     state.cities = unionedArray;
   }
 };
@@ -36,12 +36,11 @@ const actions = {
       return cities;
     }));
   },
-  getSmsCode(context, { tel, type }) {
+  getSmsCode(context, {tel, type}) {
+    console.log(tel, type);
     const codeType = util.constantHelper('smsType', type);
     if (codeType) {
-      return CommonService.getSmsCode({ tel, codeType }).then((res) => {
-        console.log(res);
-      });
+      return CommonService.getSmsCode({tel, codeType});
     }
     console.log('验证码codeType错误');
   },

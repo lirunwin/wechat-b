@@ -21,6 +21,7 @@
 <script>
 import constant from '@/constants';
 import util from '@/utils/util';
+import { mapActions } from 'vuex';
 export default {
   props: {
     type: {
@@ -37,6 +38,10 @@ export default {
       default: null
     },
     tel: String,
+    smsType: {
+      type: String,
+      default: 'SIGNIN'
+    },
     maxlength: {
       type: [String, Number],
       default: 100
@@ -49,6 +54,7 @@ export default {
     disableSms: false
   }),
   methods: {
+    ...mapActions(['getSmsCode']),
     updataVal(val) {
       this.$emit('input', val);
     },
@@ -58,17 +64,26 @@ export default {
         util.showToast('电话号码有误');
         return;
       }
+
       if (!this.disableSms) {
-        this.$emit('getCode');
+        let timer = null;
+        this.getSmsCode({
+          tel: this.tel,
+          type: this.smsType
+        }).catch(() => {
+          clearInterval(timer);
+          this.time = this.countDown;
+          this.disableSms = false;
+        })
         this.disableSms = true;
         this.time = this.countDown;
-        let timer = setInterval(() => {
-          this.time--
-            if (this.time === 0) {
-              this.time = this.countDown;
-              this.disableSms = false
-              clearInterval(timer)
-            }
+        timer = setInterval(() => {
+          this.time--;
+          if (this.time === 0) {
+            this.time = this.countDown;
+            this.disableSms = false
+            clearInterval(timer)
+          }
         }, 1000)
       }
     }

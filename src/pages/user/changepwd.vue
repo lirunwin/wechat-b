@@ -2,7 +2,7 @@
   <div class="user-password container bg-white">
     <div class="row mx-0 pt-2">
       <div class="col-12 pb-1">
-        <input-box placeholder="旧密码" type="password" v-model.lazy="password.odlPwd"></input-box>
+        <input-box placeholder="旧密码" type="password" v-model.lazy="password.oldPwd"></input-box>
       </div>
       <div class="col-12 pb-1">
         <input-box placeholder="新密码" type="password" v-model.lazy="password.newPwd"></input-box>
@@ -31,11 +31,15 @@ export default {
     password: {
       newPwd: '',
       oldPwd: ''
-    }
+    },
+    rePassword: ''
   }),
   methods: {
     ...mapActions(['changePwd', 'logout']),
     onChangePwd() {
+      console.log(this.password.oldPwd);
+      console.log(this.password.newPwd);
+      console.log(this.rePassword);
       if (!this.password.oldPwd) {
         util.showToast('旧密码不能为空');
         return;

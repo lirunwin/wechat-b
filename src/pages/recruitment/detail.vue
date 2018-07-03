@@ -1,16 +1,16 @@
 <template lang="html">
   <div class="recruitment-detail container">
     <div class="recruitment-tab">
-      <div class="row py-1 shadow-xs">
-        <h5 class="col tab-item mb-0"
+      <div class="row shadow-xs">
+        <h5 class="col py-1 tab-item mb-0"
           :class="{ active: tab === 'plan' }"
           @click="tab = 'plan'">招聘详情
         </h5>
-        <h5 class="col tab-item mb-0"
+        <h5 class="col py-1 tab-item mb-0"
           :class="{ active: tab === 'in' }"
           @click="tab = 'in'">已招募
         </h5>
-        <h5 class="col tab-item mb-0"
+        <h5 class="col py-1 tab-item mb-0"
           :class="{ active: tab === 'standBy' }"
           @click="tab = 'standBy'">待处理
         </h5>
@@ -141,16 +141,15 @@ export default {
         });
     },
     editRecruitment() {
-      this.$store.commit('updateCurrentRecruitment', this.id);
-      this.$router.push({ path: '/pages/recruitment/post', isTab: true })
+      this.$router.push({ path: '/pages/recruitment/post', query: { id: this.id, mode: 'edit' } })
     },
     refresh() {
       Promise.all([
-        this.resetRecruitmentState(),
-        this.getDetail(),
-        this.getStandBy(),
-        this.getConfirmed()
-      ])
+          this.resetRecruitmentState(),
+          this.getDetail(),
+          this.getStandBy(),
+          this.getConfirmed()
+        ])
         .then(() => wx.stopPullDownRefresh())
     }
   },
@@ -179,7 +178,7 @@ export default {
                 content: '';
                 display: block;
                 position: absolute;
-                top: 80%;
+                bottom: 5px;
                 left: 0;
                 width: 100%;
                 padding-top: 10px;

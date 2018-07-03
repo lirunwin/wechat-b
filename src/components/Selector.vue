@@ -64,7 +64,6 @@ export default {
           let times = 10;
           let timer = setInterval(() => {
             times--
-            console.log(this.index);
             if (this.items.length) {
               this.index = this.items.findIndex(item => item[propertyName] == newValue); // 没找到会返回 -1
               clearInterval(timer)

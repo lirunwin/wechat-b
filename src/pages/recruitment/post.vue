@@ -105,10 +105,13 @@
       </div>
     </div>
     <div class="row mx-0 px-1 pt-1 pb-2">
-      <div class="col pl-0">
+      <!-- <div class="col pl-0" v-if="mode !== 'edit'">
         <div class="btn btn-primary btn-block">重置</div>
       </div>
-      <div class="col pr-0">
+      <div class="col" :class="{ 'px-0': mode === 'edit', 'pr-0': mode !== 'edit' }">
+        <div class="btn btn-primary btn-block active" @click="onSubmit">提交</div>
+      </div> -->
+      <div class="col px-0">
         <div class="btn btn-primary btn-block active" @click="onSubmit">提交</div>
       </div>
     </div>
@@ -249,67 +252,74 @@ export default {
       if (this.post.education === 'LEVEL_0' || this.post.education === '') {
         delete this.post.education
       }
-      console.log(JSON.stringify(this.post, null, 2));
       this.saveRecruitment(this.post)
         .then(res => {
-          this.$router.push({ path: '/pages/recruitment/index', isTab: true })
+          util.showToast(res.msg || '操作成功');
+          setTimeout(() => {
+            this.$router.push({ path: '/pages/recruitment/index' })
+          }, 1000)
         });
     },
     getDefaultDate() {
-
-      wx.setNavigationBarTitle({
-        title: '修改招聘信息'
-      })
-      let id = this.$store.getters.currentRecruitment;
-      console.log(id);
-      if (!id) return;
-      this.$store.commit('updateCurrentRecruitment', '');
-      this.fetchRecruitmentDetail({ id })
-        .then(detail => {
-          // let detail = this.recruitmentsDetails.find(detail => detail.id = id);
-          // console.log({ detail });
-          this.jobNatures = this.jobNatures.map(nature => {
-            if (nature.value === detail.jobnature || nature.name === detail.jobnature) {
-              nature.checked = true
-            } else {
-              delete nature.checked
+      if (this.$route.query.mode === 'edit') {
+        wx.setNavigationBarTitle({
+          title: '修改招聘信息'
+        })
+        let id = this.$route.query.id;
+        console.log(id);
+        if (!id) return;
+        this.fetchRecruitmentDetail({ id })
+          .then(detail => {
+            // let detail = this.recruitmentsDetails.find(detail => detail.id = id);
+            // console.log({ detail });
+            this.jobNatures = this.jobNatures.map(nature => {
+              if (nature.value === detail.jobnature || nature.name === detail.jobnature) {
+                nature.checked = true
+              } else {
+                delete nature.checked
+              }
+              return nature;
+            });
+            this.genter ? '' : this.gender = this.gender.map(gender => {
+              if (gender.value === detail.jobsex || gender.name === detail.jobsex || !detail.jobsex) {
+                gender.checked = true
+              } else {
+                delete gender.checked
+              }
+              return gender;
+            });
+            this.position = {
+              positionParentId: detail.positionParentId,
+              positionid: detail.positionid
             }
-            return nature;
-          });
-          this.genter ? '' : this.gender = this.gender.map(gender => {
-            if (gender.value === detail.jobsex || gender.name === detail.jobsex || !detail.jobsex) {
-              gender.checked = true
-            } else {
-              delete gender.checked
+            this.defaultLocation = {
+              province: detail.provinceid,
+              city: detail.cityid,
+              county: detail.countyid
             }
-            return gender;
+            let jobCycle = detail.jobCycle.split('-');
+            this.jobDate = {
+              start: jobCycle[0].trim(),
+              end: jobCycle[1].trim()
+            }
+            let jobPeriod = detail.jobPeriod.split('-');
+            this.jobTime = {
+              start: jobPeriod[0].trim(),
+              end: jobPeriod[1].trim()
+            }
+            this.post = detail;
+            // console.log(JSON.stringify(detail, null, 2));
           });
-          this.position = {
-            positionParentId: detail.positionParentId,
-            positionid: detail.positionid
-          }
-          this.defaultLocation = {
-            province: detail.provinceid,
-            city: detail.cityid,
-            county: detail.countyid
-          }
-          let jobCycle = detail.jobCycle.split('-');
-          this.jobDate = {
-            start: jobCycle[0].trim(),
-            end: jobCycle[1].trim()
-          }
-          let jobPeriod = detail.jobPeriod.split('-');
-          this.jobTime = {
-            start: jobPeriod[0].trim(),
-            end: jobPeriod[1].trim()
-          }
-          this.post = detail;
-          // console.log(JSON.stringify(detail, null, 2));
-        });
+      }
     }
   },
-  mounted() {
+  onShow() {
     this.getDefaultDate();
+  },
+  computed: {
+    mode() {
+      return this.$route.query.mode;
+    }
   }
 };
 </script>
