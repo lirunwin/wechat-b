@@ -1,26 +1,27 @@
 <template lang="html">
   <div class="tabbar">
-      <div class="container text-center bg-white size-1">
-        <div class="row align-items-center">
-          <div class="col">
-            <i class="iconfont icon-home"></i>
-            <div>招聘信息 {{aasdsadas}}</div>
-          </div>
-          <div class="col">
-            <i class="iconfont icon-plus"></i>
-          </div>
-          <div class="col">
-              <i class="iconfont icon-center"></i>
-            <div>账户信息</div>
-          </div>
+    <div class="container text-center bg-white size-1">
+      <div class="row align-items-center">
+        <div class="col active">
+          <i class="iconfont icon-home"></i>
+          <div>招聘信息 {{$route.name}}</div>
+        </div>
+        <div class="col">
+          <i class="iconfont icon-plus"></i>
+        </div>
+        <div class="col">
+            <i class="iconfont icon-center"></i>
+          <div>账户信息</div>
         </div>
       </div>
+    </div>
   </div>
 </template>
+
 <script>
 export default {
   mounted() {
-    console.log(111);
+    console.log(this.$route.name);
   }
 }
 </script>
@@ -47,16 +48,18 @@ export default {
     .iconfont {
         display: inline-block;
     }
-    .active {
-        .icon-center::before,
-        .icon-home::before {
-            color: map-get($primary, color);
-        }
-    }
+
     .icon-center::before,
     .icon-home::before {
         font-size: 28px;
         line-height: 1;
+    }
+    .active {
+        color: map-get($primary, color);
+        .icon-center::before,
+        .icon-home::before {
+            color: map-get($primary, color);
+        }
     }
     .icon-plus {
         font-size: 35px;
@@ -65,7 +68,7 @@ export default {
         line-height: 40px;
         color: $white;
         border-radius: $border-radius;
-        background: map-get($primary, dark);
+        background: map-get($primary, light);
     }
 }
 </style>
