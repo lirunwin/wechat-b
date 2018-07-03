@@ -5,5 +5,6 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@/styles/iconfont/iconfont.css";
 @import '~@/styles/scss/app';
 </style>

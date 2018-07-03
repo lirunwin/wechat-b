@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="timeChange" mode="time" :value="value || time" class="py-0 timepicker">
+      <picker @change="timeChange" mode="time" :value="value" class="py-0 timepicker">
         <div class="row">
-          <view class="col pr-0 py-1 text-truncate">
-              {{value || time}}
+          <view class="col pr-0 text-truncate picker-label">
+              {{ value }}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
@@ -32,11 +32,13 @@ export default {
   },
   data: () => ({
     now: utils.formatTime(new Date(), "hh:mm"),
-    time: ''
+    time: '',
+    overwrite: false
   }),
   methods: {
     timeChange(e) {
       let val = this.time = e.target.value;
+      this.overwrite = true;
       this.$emit('input', val);
     },
   },

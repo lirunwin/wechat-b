@@ -3,19 +3,22 @@
     <recruitment-item :list="recruitments" v-if="recruitments.length"></recruitment-item>
     <div v-if="!recruitments.length" class="no-content">暂无信息</div>
     <done-load v-if="noMoreData" :done="noMoreData"></done-load>
+    <tabbar></tabbar>
   </div>
 </template>
 
 <script>
 import RecruitmentItem from '@/components/RecruitmentItem';
 import DoneLoad from '@/components/DoneLoad';
+import Tabbar from '@/components/Tabbar';
 import { mapActions, mapGetters } from 'vuex';
 import util from '@/utils/util';
 import wx from '@/utils/wx';
 export default {
   components: {
     RecruitmentItem,
-    DoneLoad
+    DoneLoad,
+    Tabbar
   },
   data: () => ({
     page: {
@@ -77,6 +80,7 @@ export default {
 <style lang="scss">
 @import "~@/styles/scss/common";
 .recruitments {
+    width: 100%;
     min-height: 100vh;
     background: $white;
 }

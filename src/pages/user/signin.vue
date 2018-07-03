@@ -15,13 +15,16 @@
       </div>
       <div class="col-12 px-0">
         <div class="px-3">
-          <input-box placeholder="密码" type="password" v-model.lazy="user.password" :sms="user.loginType === 'PASSWORD' ? null : ''" :tel="user.account"></input-box>
+          <sms-box placeholder="密码" type="password"
+            v-model.lazy="user.password"
+            :sms="user.loginType === 'PASSWORD' ? null : ''"
+            :tel="user.account"></sms-box>
         </div>
       </div>
       <div class="col-12 px-0 pt-3">
         <div class="px-3">
           <div class="row">
-            <div class="btn btn-primary btn-block shadow-xs col-12 signin-btn" @click="onSignIn">登录</div>
+            <div class="btn btn-primary btn-block col-12 signin-btn" @click="onSignIn">登录</div>
           </div>
           <div class="row size-2 pt-1">
             <div class="col px-0" @click="switchSignInWay">{{user.loginType === 'PASSWORD' ? '短信登录' : '账号登录'}}</div>
@@ -38,18 +41,22 @@
 
 <script>
 import InputBox from '@/components/InputBox';
+import SmsBox from '@/components/SmsBox';
 import { mapActions } from 'vuex';
 import constant from '@/constants';
 import util from '@/utils/util';
 import wx from '@/utils/wx';
 export default {
   components: {
-    InputBox
+    InputBox,
+    SmsBox
   },
   data: () => ({
     logo: require('@/assets/img/logo.png'),
     user: {
-      loginType: 'PASSWORD'
+      loginType: 'PASSWORD',
+      account: '',
+      password: ''
     }
   }),
   methods: {

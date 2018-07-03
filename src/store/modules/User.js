@@ -4,7 +4,7 @@ import wx from '@/utils/wx';
 import constant from '@/constants';
 
 const state = {
-  isLogedIn: false,
+  isLogedIn: wx.getStorageSync(constant.userKeyName).length > 0,
   userInfo: {}
 };
 const getters = {

@@ -7,26 +7,33 @@ const state = {
   recruitments: [],
   recruitmentsDetails: [],
   standByRecruits: [],
-  confirmedRecruits: []
+  confirmedRecruits: [],
+  currentRecruitment: ''
 };
 const getters = {
   recruitments: state => state.recruitments,
   recruitmentsDetails: state => state.recruitmentsDetails,
   standByRecruits: state => state.standByRecruits,
   confirmedRecruits: state => state.confirmedRecruits,
+  currentRecruitment: state => state.currentRecruitment,
 };
 const mutations = {
+
   updateRecruitments: (state, payload) => {
-    state.recruitments = state.recruitments.concat(payload);
+    state.recruitments = unionBy(payload, state.recruitments, 'id')
+  },
+  updateCurrentRecruitment: (state, payload) => {
+    state.currentRecruitment = payload;
   },
   updateRecruitmentsDetails: (state, payload) => {
     // 之后有时间再做缓存吧, 现在就直接覆盖
-    payload.identitytype = util.constantFilter('identityType', payload.identitytype);
-    payload.jobstatus = util.constantFilter('jobStatus', payload.jobstatus);
-    payload.jobnature = util.constantFilter('jobNatures', payload.jobnature);
-    payload.wageclearing = util.constantFilter('wageClearing', payload.wageclearing);
-    payload.wagemode = util.constantFilter('wageMode', payload.wagemode);
-    state.recruitmentsDetails = [payload]
+    const detail = Object.assign({}, payload);
+    detail.identitytype = util.constantFilter('identityType', detail.identitytype);
+    detail.jobstatus = util.constantFilter('jobStatus', detail.jobstatus);
+    detail.jobnature = util.constantFilter('jobNatures', detail.jobnature);
+    detail.wageclearing = util.constantFilter('wageClearing', detail.wageclearing);
+    detail.wagemode = util.constantFilter('wageMode', detail.wagemode);
+    state.recruitmentsDetails = [detail]
   },
   deleteFromRecruitments: (state, id) => {
     const recruitments = state.recruitments.slice();
@@ -91,7 +98,7 @@ const actions = {
       if (res) {
         payload.id = res
       }
-      context.commit('updateRecruitments', [recruitments]);
+      context.commit('updateRecruitments', [payload]);
       return payload;
     });
   },

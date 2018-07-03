@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="row" v-if="value.province !== undefined">
+  <div class="row">
     <div class="col-4">
         <div class="pr-1">
           <selector
@@ -7,8 +7,8 @@
             v-model="location.province"
             placeholder="省"
             label="areaName"
+            returnValue="id"
             @input="onProvinceChange"
-            :defaultIndex="locationIndex.province"
           ></selector>
         </div>
     </div>
@@ -19,8 +19,8 @@
           v-model="location.city"
           placeholder="市"
           label="areaName"
+          returnValue="id"
           @input="onCityChange"
-          :defaultIndex="locationIndex.city"
         ></selector>
       </div>
     </div>
@@ -31,8 +31,8 @@
           v-model="location.county"
           placeholder="区县"
           label="areaName"
+          returnValue="id"
           @input="onCountyChange"
-          :defaultIndex="locationIndex.county"
           ></selector>
       </div>
     </div>
@@ -40,10 +40,7 @@
 </template>
 
 <script>
-import {
-  mapGetters,
-  mapActions
-} from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Selector from '@/components/Selector';
 export default {
   name: 'CitySelector',
@@ -67,50 +64,54 @@ export default {
   data: () => ({
     items: [],
     location: {},
-    locationIndex: {
-      province: -1,
-      city: -1,
-      county: -1
-    },
     defaultLocation: {}
   }),
   computed: {
     ...mapGetters(['cities']),
     province() {
-      let provincee = this.cities.filter(item => item.pid === '0');
-      return provincee
+      let province = this.cities.filter(item => +item.pid === 0);
+      return province;
     },
     city() {
-      let cities = this.cities.filter(item => item.pid === this.location.province);
+      let cities = this.cities.filter(item => +item.pid === +this.location.province);
       return cities;
     },
     county() {
-      let counties = this.cities.filter(item => item.pid === this.location.city);
+      let counties = this.cities.filter(item => +item.pid === +this.location.city);
       return counties;
     }
   },
   watch: {
     province(newValue, oldValue) {
+      console.log(newValue, oldValue);
       if (!oldValue.length && newValue.length) {
-        this.location = Object.assign({}, this.value);
         this.defaultLocation = Object.assign({}, this.value);
-        this.locationIndex.province = this.province.findIndex(item => +item.id === +this.defaultLocation.province);
-        this.getCities({ pid: this.location.province });
-        this.getCities({ pid: this.location.city });
+        console.log(1, this.defaultLocation);
+        let pid = this.defaultLocation.province;
+        let cid = this.defaultLocation.city;
+        if (pid) {
+          Promise.all([
+            this.getCities({ pid }),
+            this.getCities({ pid: cid })
+          ])
+            .then((res) => {
+              this.location = this.defaultLocation;
+            })
+        }
       }
     },
-    city(newValue, oldValue) {
-      if (!oldValue.length && newValue.length) {
-        let index = this.city.findIndex(item => +item.id === +this.defaultLocation.city);
-        this.locationIndex.city = index;
-      }
-    },
-    county(newValue, oldValue) {
-      if (!oldValue.length && newValue.length) {
-        let index = this.county.findIndex(item => +item.id === +this.defaultLocation.county);
-        this.locationIndex.county = index;
-      }
-    }
+    // city(newValue, oldValue) {
+    //   if (!oldValue.length && newValue.length) {
+    //     let index = this.city.findIndex(item => +item.id === +this.defaultLocation.city);
+    //     this.locationIndex.city = index;
+    //   }
+    // },
+    // county(newValue, oldValue) {
+    //   if (!oldValue.length && newValue.length) {
+    //     let index = this.county.findIndex(item => +item.id === +this.defaultLocation.county);
+    //     this.locationIndex.county = index;
+    //   }
+    // }
   },
   methods: {
     ...mapActions(['getCities']),
@@ -120,36 +121,29 @@ export default {
     getCounty(pid) {
       this.getCities({ pid });
     },
-    onProvinceChange(index) {
-      if (this.disableCity === null) {
-        let id = this.province[index].id;
-        this.location.province = id;
-        this.location.city = 0;
-        // this.locationIndex.city = 0;
-        this.location.county = 0;
-        // this.locationIndex.county = 0;
-        this.onChange();
-        let city = this.cities.filter(item => item.pid === id);
-        if (city.length === 0) {
-          this.getCity(id);
-        }
+    onProvinceChange(id) {
+      this.location.province = id;
+      this.location.city = -1;
+      this.location.county = -1;
+      this.onChange();
+      let city = this.cities.filter(item => item.pid === id);
+      if (city.length === 0) {
+        this.getCity(id);
       }
     },
-    onCityChange(index) {
-      if (this.disableCounty === null) {
-        let id = this.city[index].id;
-        this.location.city = id;
-        this.location.county = 0;
-        // this.locationIndex.county = 0;
-        this.onChange();
-        let county = this.cities.filter(item => item.pid === id);
-        if (county.length === 0) {
-          this.getCounty(id)
-        }
+    onCityChange(id) {
+      console.log(id);
+      let location = Object.assign({}, this.location);
+      location.city = id;
+      location.county = -1;
+      this.location = location;
+      this.onChange();
+      let county = this.cities.filter(item => item.pid === id);
+      if (county.length === 0) {
+        this.getCounty(id)
       }
     },
-    onCountyChange(index) {
-      let id = this.county[index].id
+    onCountyChange(id) {
       this.location.county = id;
       this.onChange();
     },

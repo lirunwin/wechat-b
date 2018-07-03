@@ -13,7 +13,7 @@
     </div>
     <div class="row mt-2">
       <div class="col-12">
-        <div class="btn btn-primary btn-block shadow-xs" @click="onChangePwd">确定</div>
+        <div class="btn btn-primary btn-block" @click="onChangePwd">确定</div>
       </div>
     </div>
   </div>
@@ -48,16 +48,18 @@ export default {
         util.showToast('密码输入不相同');
         return;
       }
-      this.changePwd(this.password).then(res => {
-        if (res.msg) {
-          util.showToast('修改成功');
-          this.logout().then(() => {
-            setTimeout(() => {
-              this.$router.replace({ path: '/pages/user/signin' });
-            }, 2000)
-          });
-        }
-      });
+      this.changePwd(this.password)
+        .then(res => {
+          if (res.msg) {
+            util.showToast('修改成功');
+            this.logout()
+              .then(() => {
+                setTimeout(() => {
+                  this.$router.replace({ path: '/pages/user/signin' });
+                }, 2000)
+              });
+          }
+        });
     }
   }
 }

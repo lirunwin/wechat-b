@@ -17,6 +17,14 @@ $border-radius: 3px;
 $color-gray: #e6e6e6;
 $yiq-contrasted-threshold: 185;
 $stepper-text-color: #ffffff;
+$btn-elevation-shadow: (
+  elevation: 0,
+  shadow: 0
+);
+$btn-elevation-shadow-active:  (
+  elevation: 0,
+  shadow: 0
+);
 $primary: (
   color: #acc192,
   dark: #7a9d55,

@@ -9,14 +9,13 @@
         <h5>职位类型</h5>
         <position-selector v-model="position"></position-selector>
       </div>
-      <div class="col-12 mb-1">
+      <div class="col-12 mb-1 sr-only">
         <h5>工作性质</h5>
         <radio-boxes :items="jobNatures" v-model="post.jobnature" returnValue></radio-boxes>
       </div>
       <div class="col-12 mb-1">
         <h5>拟招聘人数</h5>
-        <input-box placeholder="请输入拟招聘人数" v-model="post.peoplenumber" unit="/人" type="number"></input-box>
-        <!-- 固定传一个兼职 -->
+        <input-box placeholder="请输入拟招聘人数" v-model="post.peoplenumber" unit="/人" type="number" maxlength="3"></input-box>
       </div>
       <div class="col-12 mb-1">
         <h5>工作周期</h5>
@@ -52,7 +51,7 @@
       </div>
       <div class="col-12 mb-1">
         <h5>工作地址</h5>
-        <city-selector v-model="location"></city-selector>
+        <city-selector v-model="location" :defaultLocation="defaultLocation"></city-selector>
         <div class="pb-1"></div>
         <input-box placeholder="请输入工作地址" v-model="post.address"></input-box>
       </div>
@@ -74,11 +73,11 @@
       </div>
       <div class="col-12 mb-1">
         <h5>工资结算</h5>
-        <selector v-model="post.wageclearing" returnValue :items="wageClearing" placeholder="请选择工资结算"></selector>
+        <selector v-model="post.wageclearing" returnValue :items="wageClearing" returnValue placeholder="请选择工资结算"></selector>
       </div>
       <div class="col-12 mb-1">
         <h5>工资模式</h5>
-        <selector v-model="post.wagemode" returnValue :items="wageMode" placeholder="请选择工资模式"></selector>
+        <selector v-model="post.wagemode" returnValue :items="wageMode" returnValue placeholder="请选择工资模式"></selector>
       </div>
       <div class="col-12 mb-1">
         <h5>工资范围</h5>
@@ -107,10 +106,10 @@
     </div>
     <div class="row mx-0 px-1 pt-1 pb-2">
       <div class="col pl-0">
-        <div class="btn btn-primary btn-block shadow-sm">重置</div>
+        <div class="btn btn-primary btn-block">重置</div>
       </div>
       <div class="col pr-0">
-        <div class="btn btn-primary btn-block active shadow-sm" @click="onSubmit">提交</div>
+        <div class="btn btn-primary btn-block active" @click="onSubmit">提交</div>
       </div>
     </div>
   </div>
@@ -127,10 +126,7 @@ import CitySelector from "@/components/CitySelector";
 import constant from "@/constants";
 import util from '@/utils/util';
 import wx from '@/utils/wx';
-import {
-  mapActions,
-  mapGetters
-} from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   components: {
     InputBox,
@@ -148,6 +144,7 @@ export default {
     wageClearing: constant.wageClearing,
     wageMode: constant.wageMode,
     location: {},
+    defaultLocation: {},
     position: {},
     jobDate: {
       start: '',
@@ -169,7 +166,7 @@ export default {
     ...mapGetters(['recruitmentsDetails'])
   },
   methods: {
-    ...mapActions(['saveRecruitment']),
+    ...mapActions(['saveRecruitment', 'fetchRecruitmentDetail']),
     validate() {
       if (!this.post.title) {
         util.showToast('标题：' + constant.NoTitle);
@@ -187,14 +184,14 @@ export default {
         util.showToast('招聘人数：' + constant.NoRecruitNum);
         return false;
       }
-      if (this.jobDate.start.replace(/\D/g, '') >= this.jobDate.end.replace(/\D/g, '')) {
-        util.showToast('工作周期：' + constant.WrongRange);
-        return false;
-      }
-      if (this.jobTime.start.replace(/\D/g, '') >= this.jobTime.end.replace(/\D/g, '')) {
-        util.showToast('工作时段：' + constant.WrongRange);
-        return false;
-      }
+      // if (this.jobDate.start.replace(/\D/g, '') >= this.jobDate.end.replace(/\D/g, '')) {
+      //   util.showToast('工作周期：' + constant.WrongRange);
+      //   return false;
+      // }
+      // if (this.jobTime.start.replace(/\D/g, '') >= this.jobTime.end.replace(/\D/g, '')) {
+      //   util.showToast('工作时段：' + constant.WrongRange);
+      //   return false;
+      // }
       if (!this.post.education) {
         util.showToast('招聘人数：' + constant.NoEduDegree);
         return false;
@@ -234,7 +231,7 @@ export default {
       return true;
     },
     onSubmit() {
-      // if (!this.validate()) return;
+      if (!this.validate()) return;
       this.post.positionParentId = this.position.positionParentId;
       this.post.positionid = this.position.positionid;
       this.post.jobCycle = this.jobCycle;
@@ -245,6 +242,7 @@ export default {
 
       this.post.wagegrant = 'SELF';
       this.post.commissionunit = '单';
+      this.post.jobnature = "PARTTIME";
       if (this.post.jobsex === 'NONE') {
         delete this.post.jobsex
       }
@@ -252,58 +250,66 @@ export default {
         delete this.post.education
       }
       console.log(JSON.stringify(this.post, null, 2));
-      this.saveRecruitment(this.post);
-    }
-  },
-  mounted() {
-    let mode = this.$route.query.mode;
-    if (mode === 'edit') {
+      this.saveRecruitment(this.post)
+        .then(res => {
+          this.$router.push({ path: '/pages/recruitment/index', isTab: true })
+        });
+    },
+    getDefaultDate() {
+
       wx.setNavigationBarTitle({
         title: '修改招聘信息'
       })
-      this.fetchRecruitmentDetail({ id: this.$route.query.id });
-      let detail = this.recruitmentsDetails.find(detail => detail.id = this.$route.query.id);
-
-      this.jobNatures = this.jobNatures.map(nature => {
-        if (nature.value === detail.jobnature || nature.name === detail.jobnature) {
-          nature.checked = true
-        } else {
-          delete nature.checked
-        }
-        return nature;
-      })
-      this.genter ? '' : this.gender = this.gender.map(gender => {
-        if (gender.value === detail.jobsex || gender.name === detail.jobsex) {
-          gender.checked = true
-        } else {
-          delete gender.checked
-        }
-        return gender;
-      })
-      // console.log(JSON.stringify(detail, null, 2));
-      this.position = {
-        positionParentId: detail.positionParentId,
-        positionid: detail.positionid
-      }
-      this.location = {
-        province: detail.provinceid,
-        city: detail.cityid,
-        county: detail.countyid
-      }
-      console.log(12, this.location);
-      let jobCycle = detail.jobCycle.split('-');
-      this.jobDate = {
-        start: jobCycle[0],
-        end: jobCycle[1]
-      }
-      let jobPeriod = detail.jobPeriod.split('-');
-      this.jobTime = {
-        start: jobPeriod[0],
-        end: jobPeriod[1]
-      }
-      this.post = detail;
-      // console.log(JSON.stringify(this.position, null, 2));
+      let id = this.$store.getters.currentRecruitment;
+      console.log(id);
+      if (!id) return;
+      this.$store.commit('updateCurrentRecruitment', '');
+      this.fetchRecruitmentDetail({ id })
+        .then(detail => {
+          // let detail = this.recruitmentsDetails.find(detail => detail.id = id);
+          // console.log({ detail });
+          this.jobNatures = this.jobNatures.map(nature => {
+            if (nature.value === detail.jobnature || nature.name === detail.jobnature) {
+              nature.checked = true
+            } else {
+              delete nature.checked
+            }
+            return nature;
+          });
+          this.genter ? '' : this.gender = this.gender.map(gender => {
+            if (gender.value === detail.jobsex || gender.name === detail.jobsex || !detail.jobsex) {
+              gender.checked = true
+            } else {
+              delete gender.checked
+            }
+            return gender;
+          });
+          this.position = {
+            positionParentId: detail.positionParentId,
+            positionid: detail.positionid
+          }
+          this.defaultLocation = {
+            province: detail.provinceid,
+            city: detail.cityid,
+            county: detail.countyid
+          }
+          let jobCycle = detail.jobCycle.split('-');
+          this.jobDate = {
+            start: jobCycle[0].trim(),
+            end: jobCycle[1].trim()
+          }
+          let jobPeriod = detail.jobPeriod.split('-');
+          this.jobTime = {
+            start: jobPeriod[0].trim(),
+            end: jobPeriod[1].trim()
+          }
+          this.post = detail;
+          // console.log(JSON.stringify(detail, null, 2));
+        });
     }
+  },
+  mounted() {
+    this.getDefaultDate();
   }
 };
 </script>

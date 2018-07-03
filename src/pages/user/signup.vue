@@ -25,13 +25,13 @@
                <input-box v-model.lazy="user.tel" placeholder="手机号码" maxlength="11"></input-box>
              </div>
              <div class="col-12 mb-1">
-               <input-box v-model.lazy="user.veryCode"
+               <sms-box v-model="user.veryCode"
                  placeholder="验证码"
                  :sms="true"
                  @getCode="getAuthCode"
                  :tel="user.tel"
                  type="number"
-                 maxlength="6"></input-box>
+                 maxlength="6"></sms-box>
              </div>
              <div class="col-12 mb-1">
                <input-box v-model.lazy="user.password" placeholder="密码" type="password" maxlength="30"></input-box>
@@ -106,6 +106,7 @@
 
 <script>
 import InputBox from '@/components/InputBox';
+import SmsBox from '@/components/SmsBox';
 import CitySelector from '@/components/CitySelector';
 import ImageUploader from '@/components/ImageUploader';
 import constant from '@/constants';
@@ -114,6 +115,7 @@ import { mapActions } from 'vuex';
 export default {
   components: {
     InputBox,
+    SmsBox,
     CitySelector,
     ImageUploader
   },

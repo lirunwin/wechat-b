@@ -45,12 +45,12 @@ const showToast = (title, duration = 2000, icon = 'none', image = '') => {
   });
 };
 const constantFilter = (name, value) => {
-  const constant = constants[name].find(constant => constant.value = value);
+  const constant = constants[name].find(constant => constant.value === value);
   if (!constant) return value;
   return constant.name || constant.label || value;
 };
 const constantHelper = (name, value) => {
-  const constant = constants[name].find(constant => constant.label = value);
+  const constant = constants[name].find(constant => constant.label === value);
   if (!constant) return value;
   return constant.value || '';
 };

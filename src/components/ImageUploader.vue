@@ -46,10 +46,7 @@ export default {
           return promiseWX.uploadFile({
               url: constant.fileUploadUrl, //仅为示例，非真实的接口地址
               filePath: image,
-              name: 'file',
-              formData: {
-                'user': 'test'
-              }
+              name: 'file'
             })
             .then(res => {
               let imgUrl = JSON.parse(res.data)
@@ -107,7 +104,7 @@ export default {
     max-height: 200px;
     min-height: 120px;
     margin: 0 auto;
-    background: url("~@/assets/img/img_placeholder.gif");
+    // background-image: url("~@/assets/img/img_placeholder.gif");
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;

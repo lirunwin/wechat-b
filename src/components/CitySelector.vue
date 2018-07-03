@@ -59,12 +59,15 @@ export default {
     disableCounty: {
       type: [String, Boolean],
       default: null
+    },
+    defaultLocation: {
+      type: Object,
+      default: null
     }
   },
   data: () => ({
     items: [],
-    location: {},
-    defaultLocation: {}
+    location: {}
   }),
   computed: {
     ...mapGetters(['cities']),
@@ -82,22 +85,40 @@ export default {
     }
   },
   watch: {
-    province(newValue, oldValue) {
-      if (!oldValue.length && newValue.length) {
-        this.defaultLocation = Object.assign({}, this.value);
-        let pid = this.defaultLocation.province;
-        let cid = this.defaultLocation.city;
-        if (pid) {
-          Promise.all([
-            this.getCities({ pid }),
-            this.getCities({ pid: cid })
-          ])
-            .then((res) => {
-              console.log(this.city);
-              this.location = this.defaultLocation;
-            })
-        }
+    defaultLocation(newValue, oldValue) {
+      // Promise.all([
+      //   this.getCities({ pid:}),
+      //   this.getCities({ pid: cid })
+      // ])
+      //   .then((res) => {
+      //     this.location = this.defaultLocation;
+      //   })
+      let pid = newValue.province;
+      let cid = newValue.city;
+      if (pid) {
+        Promise.resolve([
+          this.onProvinceChange(pid),
+          this.onCityChange(cid)
+        ])
+          .then(() => {
+            this.location = Object.assign({}, newValue);
+          })
       }
+
+      // if (!oldValue.length && newValue.length) {
+      //   this.defaultLocation = Object.assign({}, this.value);
+      //   let pid = this.defaultLocation.province;
+      //   let cid = this.defaultLocation.city;
+      //   if (pid) {
+      //     Promise.all([
+      //       this.getCities({ pid }),
+      //       this.getCities({ pid: cid })
+      //     ])
+      //       .then((res) => {
+      //         this.location = this.defaultLocation;
+      //       })
+      //   }
+      // }
     },
     // city(newValue, oldValue) {
     //   if (!oldValue.length && newValue.length) {
@@ -121,27 +142,31 @@ export default {
       this.getCities({ pid });
     },
     onProvinceChange(id) {
-      if (this.disableCity === null) {
-        this.location.province = id;
-        this.location.city = 0;
-        this.location.county = 0;
-        this.onChange();
-        let city = this.cities.filter(item => item.pid === id);
-        if (city.length === 0) {
-          this.getCity(id);
-        }
+      console.log('province changed');
+      if (!id) return;
+      this.location.province = id;
+      this.location.city = -1;
+      this.location.county = -1;
+      this.onChange();
+      let city = this.cities.filter(item => item.pid === id);
+      if (city.length === 0) {
+        this.getCity(id);
       }
+      return city;
     },
     onCityChange(id) {
-      if (this.disableCounty === null) {
-        this.location.city = id;
-        this.location.county = 0;
-        this.onChange();
-        let county = this.cities.filter(item => item.pid === id);
-        if (county.length === 0) {
-          this.getCounty(id)
-        }
+      console.log(id);
+      if (!id) return;
+      let location = Object.assign({}, this.location);
+      location.city = id;
+      location.county = -1;
+      this.location = location;
+      this.onChange();
+      let county = this.cities.filter(item => item.pid === id);
+      if (county.length === 0) {
+        this.getCounty(id)
       }
+      return county;
     },
     onCountyChange(id) {
       this.location.county = id;

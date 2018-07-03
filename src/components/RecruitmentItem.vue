@@ -6,7 +6,7 @@
         <div class="col-auto text-secondary">{{item.jobstatus}}</div>
       </div>
       <div class="row align-items-end section-middle">
-        <div class="col text-muted">{{item.jobnature}} ︱ {{item.wageclearing}} ︱ {{item.wagebase}}元/天 </div>
+        <div class="col text-muted">{{item.jobnature + ' ︱ '}}{{item.wageclearing + ' ︱ '}}{{item.wagebase}}元/天 </div>
         <div class="col-auto" v-if="item.waitCount">待处理
           <span class="font-weight-bold pl-1 size-3 text-secondary">{{item.waitCount}}</span>
         </div>

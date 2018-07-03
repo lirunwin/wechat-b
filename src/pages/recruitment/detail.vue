@@ -4,7 +4,7 @@
       <div class="row py-1 shadow-xs">
         <h5 class="col tab-item mb-0"
           :class="{ active: tab === 'plan' }"
-          @click="tab = 'plan'">拟招募
+          @click="tab = 'plan'">招聘详情
         </h5>
         <h5 class="col tab-item mb-0"
           :class="{ active: tab === 'in' }"
@@ -141,7 +141,8 @@ export default {
         });
     },
     editRecruitment() {
-      this.$router.push({ path: '/pages/recruitment/post', query: { mode: 'edit', id: this.id } })
+      this.$store.commit('updateCurrentRecruitment', this.id);
+      this.$router.push({ path: '/pages/recruitment/post', isTab: true })
     },
     refresh() {
       Promise.all([

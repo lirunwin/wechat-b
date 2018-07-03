@@ -3,7 +3,7 @@
     <div class='col selector-text pr-0'>
       <picker @change="dateChange" :start="today" mode="date" :value="value || date" class="py-0 datepicker">
         <div class="row">
-          <view class="col pr-0 py-1 text-truncate">
+          <view class="col pr-0 picker-label text-truncate">
               {{value || date}}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
@@ -45,6 +45,7 @@ export default {
   methods: {
     dateChange(e) {
       let val = this.date = utils.formatTime(e.target.value, this.format, this.appendZero);
+      console.log(val);
       this.$emit('input', val);
     },
   },

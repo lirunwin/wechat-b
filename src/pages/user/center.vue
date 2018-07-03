@@ -9,16 +9,16 @@
     </div>
     <div class="row pb-4">
       <div class="col-12 pt-1 size-4">{{ userInfo.comname }}</div>
-      <div class="col-12 pt-1 size-3">账号：{{ userInfo.contactstel }}</div>
-      <div class="col-12 pt-1 size-3 text-muted">注册时间：{{userInfo.createtime}}</div>
+      <div class="col-12 pt-1 size-3">办公电话：{{ userInfo.contactstel }}</div>
+      <div class="col-12 pt-1 size-3 text-muted">注册时间：{{ userInfo.createtime }}</div>
     </div>
     <div class="row pb-4">
       <div class="col-12">
         <div class="px-3">
-          <div class="btn btn-primary btn-block shadow-xs" @click="editUserInfo">修改信息</div>
+          <div class="btn btn-primary btn-block" @click="editUserInfo">修改信息</div>
         </div>
         <div class="px-3 mt-2">
-          <div class="btn btn-outline-primary btn-block shadow-xs" @click="onLogout">退出登录</div>
+          <div class="btn btn-outline-primary btn-block" @click="onLogout">退出登录</div>
         </div>
       </div>
     </div>

@@ -37,14 +37,19 @@ request.interceptors.response.use(
         return promise.resolve(res.data);
       }
       return promise.resolve(res);
-    } else if (res.code === 4000004 || res.code === 100002) {
+    } else if (res.code === 4000004) {
       WX.showModal({
         title: '温馨提示',
-        content: res.code === 100002 ? '用户名或密码错误' : '登录超时请重新登录，请重新登录'
+        content: '登录超时请重新登录，请重新登录'
       }).then(() => {
         wx.redirectTo({
           url: '../user/signin',
         });
+      });
+    } else if (res.code === 100002) {
+      wx.showToast({
+        title: '用户名或密码错误',
+        icon: 'none',
       });
     }
     if (res.msg) {

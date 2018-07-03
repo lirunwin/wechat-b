@@ -42,6 +42,12 @@ export default {
     }
   },
   watch: {
+    value(newValue, oldValue) {
+      if (!oldValue.positionParentId) {
+        this.pid = newValue.positionParentId;
+        this.initCid = newValue.positionid;
+      }
+    },
     pid: function (newPid) {
       if (newPid) {
         this.position.positionParentId = newPid;
@@ -53,6 +59,8 @@ export default {
             if (this.initCid !== null) {
               this.cid = this.initCid;
               this.initCid = null;
+            } else {
+              this.cid = -1;
             }
           })
       }
@@ -71,8 +79,7 @@ export default {
       .then((res) => {
         // console.log(123, res);
         // console.log(1, JSON.stringify(this.value));
-        this.pid = this.value.positionParentId;
-        this.initCid = this.value.positionid;
+
       });
   }
 }

@@ -37,29 +37,28 @@ export default {
       // navigationBarTitleText: '懒虫动动',
       // navigationBarTextStyle: 'white',
     },
-    tabBar: {
-      color: '#999',
-      selectedColor: '#9fb485',
-      backgroundColor: '#fff',
-      borderStyle: 'black',
-      list: [{
-        pagePath: 'pages/recruitment/index',
-        text: '招聘信息',
-        iconPath: 'static/img/tab1.png',
-        selectedIconPath: 'static/img/tab1_active.png',
-      },
-      {
-        pagePath: 'pages/recruitment/post',
-        iconPath: 'static/img/tab2.png',
-        selectedIconPath: 'static/img/tab2.png',
-      },
-      {
-        pagePath: 'pages/user/center',
-        text: '账户信息',
-        iconPath: 'static/img/tab3.png',
-        selectedIconPath: 'static/img/tab3_active.png',
-      }
-      ],
-    },
+    // tabBar: {
+    //   color: '#999',
+    //   selectedColor: '#9fb485',
+    //   backgroundColor: '#fff',
+    //   borderStyle: 'black',
+    //   list: [{
+    //     pagePath: 'pages/recruitment/index',
+    //     text: '招聘信息',
+    //     iconPath: 'static/img/tab1.png',
+    //     selectedIconPath: 'static/img/tab1_active.png',
+    //   },
+    //   {
+    //     pagePath: 'pages/recruitment/post',
+    //     iconPath: 'static/img/tab2.png',
+    //     selectedIconPath: 'static/img/tab2.png',
+    //   },
+    //   {
+    //     pagePath: 'pages/user/center',
+    //     text: '账户信息',
+    //     iconPath: 'static/img/tab3.png',
+    //     selectedIconPath: 'static/img/tab3_active.png',
+    //   }],
+    // },
   },
 };

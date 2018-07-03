@@ -58,10 +58,22 @@ export default {
   },
   watch: {
     value(newValue, oldValue) {
-      if (this.items.length && newValue) { // 有默认值的时候
+      if (newValue) { // 有默认值的时候
         if (this.returnValue !== false) { // 如果需要返回值或id 否则返回 index
           let propertyName = this.returnValue ? this.returnValue : 'value'; // 如果没定义名称 返回value属性, 如果没有value属性
-          this.index = this.items.findIndex(item => item[propertyName] == newValue); // 没找到会返回 -1
+          let times = 10;
+          let timer = setInterval(() => {
+            times--
+            console.log(this.index);
+            if (this.items.length) {
+              this.index = this.items.findIndex(item => item[propertyName] == newValue); // 没找到会返回 -1
+              clearInterval(timer)
+            }
+            if (!times) {
+              clearInterval(timer)
+            }
+          }, 500)
+
         } else {
           this.index = newValue
         }
