@@ -30,12 +30,11 @@ const actions = {
     }));
   },
   getCities(context, payload) {
-    console.log({ payload });
-    return CommonService.getCities(payload).then(((cities) => {
+    return CommonService.getCities(payload).then(cities => {
       // console.log('我在这儿去去去', JSON.stringify(cities, null, 2));
       context.commit('updateCities', cities);
       return cities;
-    }));
+    });
   },
   getSmsCode(context, { tel, type }) {
     console.log(tel, type);

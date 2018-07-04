@@ -4,7 +4,7 @@
       <picker @change="pickerChange" :value="index" :range="items" :range-key="label">
         <div class="row">
           <view class="col pr-0 text-truncate picker-label">
-            {{index === -1 ? placeholder : items.length === 0 ? placeholder : items[index][label]}}
+            {{index === -1 ? placeholder : items.length === 0 ? placeholder : items[index] ? items[index][label] : ''}}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
@@ -56,7 +56,7 @@ export default {
           // console.log(3, val);
         }
       }
-      // console.log(1, val);      
+      // console.log(1, val);
     }
   },
   watch: {
