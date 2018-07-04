@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-12 px-0 pb-1">
         <div class="px-3">
-          <input-box placeholder="请输入手机号" v-model.lazy="user.account"></input-box>
+          <input-box placeholder="请输入手机号" v-model.lazy="user.account" maxlength="11" type="number"></input-box>
         </div>
       </div>
       <div class="col-12 px-0">
@@ -87,7 +87,7 @@ export default {
           this.$store.commit('logedIn');
           wx.setStorageSync(constant.userKeyName, res.data || res);
           if (res.msg === 'WSXX') {
-            this.$router.push({ path: '/pages/user/signup', query: { step: 2 } })
+            this.$router.replace({ path: '/pages/user/signup', query: { step: 2 } })
           } else {
             this.$router.push({ path: '/pages/recruitment/index' })
           }

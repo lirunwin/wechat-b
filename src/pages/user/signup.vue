@@ -172,7 +172,7 @@ export default {
           .then(res => {
             util.showToast('操作成功');
             setTimeout(() => {
-              this.$router.go()
+              this.$router.replace({ path: '/pages/recruitment/index' })
             }, 2000)
           });
       }

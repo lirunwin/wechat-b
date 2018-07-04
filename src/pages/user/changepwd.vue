@@ -55,7 +55,7 @@ export default {
       this.changePwd(this.password)
         .then(res => {
           if (res.msg) {
-            util.showToast('修改成功');
+            util.showToast('修改成功,请用新密码重新登陆');
             this.logout()
               .then(() => {
                 setTimeout(() => {

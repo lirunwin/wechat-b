@@ -115,6 +115,7 @@
         <div class="btn btn-primary btn-block active" @click="onSubmit">提交</div>
       </div>
     </div>
+    <tab-bar></tab-bar>
   </div>
 </template>
 
@@ -126,6 +127,7 @@ import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 import Selector from "@/components/Selector";
 import CitySelector from "@/components/CitySelector";
+import TabBar from '@/components/TabBar';
 import constant from "@/constants";
 import util from '@/utils/util';
 import wx from '@/utils/wx';
@@ -138,7 +140,8 @@ export default {
     DatePicker,
     TimePicker,
     Selector,
-    CitySelector
+    CitySelector,
+    TabBar
   },
   data: () => ({
     gender: constant.gender,
@@ -260,8 +263,37 @@ export default {
           }, 1000)
         });
     },
+    resetData() {
+      this.gender = constant.gender,
+        this.jobNatures = constant.jobNatures,
+        this.eduList = constant.eduList,
+        this.wageClearin = constant.wageClearing,
+        this.wageMode = constant.wageMode,
+        this.location = {
+          province: 0,
+          city: 0,
+          county: 0
+        },
+        this.defaultLocation = {
+          province: -1,
+          city: -1,
+          county: -1
+        },
+        this.position = {},
+        this.jobDate = {
+          start: '',
+          end: ''
+        },
+        this.jobTime = {
+          start: '',
+          end: ''
+        },
+        this.post = {}
+    },
     getDefaultDate() {
+      this.resetData();
       if (this.$route.query.mode === 'edit') {
+        console.log('虽然我来了,但是我还是有数据:' + this.$route.query.mode);
         wx.setNavigationBarTitle({
           title: '修改招聘信息'
         })

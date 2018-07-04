@@ -34,13 +34,16 @@ export default {
   },
   methods: {
     goToPost() {
-      this.$router.push({ path: '/pages/recruitment/post' })
+      if (this.currentTab === 'pagesRecruitmentPost') return;
+      this.$router.replace({ path: '/pages/recruitment/post' })
     },
     goToRecruitmentIndex() {
-      this.$router.push({ path: '/pages/recruitment/index' })
+      if (this.currentTab === 'pagesRecruitmentIndex') return;
+      this.$router.replace({ path: '/pages/recruitment/index' })
     },
     goToUserCenter() {
-      this.$router.push({ path: '/pages/user/center' })
+      if (this.currentTab === 'pagesUserCenter') return;
+      this.$router.replace({ path: '/pages/user/center' })
     }
   }
 }

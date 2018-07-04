@@ -41,7 +41,7 @@ const actions = {
     context.commit('logedIn', false);
     wx.removeStorageSync(constant.userKeyName);
     return UserService.logout(payload).then((res) => {
-      util.showToast(res.msg);
+      util.showToast(res.msg || '操作成功');
       return res;
     });
   },

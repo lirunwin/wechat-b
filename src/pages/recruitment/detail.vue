@@ -56,8 +56,8 @@
         </div>
       </div>
       <div class="pt-4 mt-2"></div>
-      <div class="detail-action container border-top">
-        <div class="px-1 bg-white">
+      <div class="detail-action container border-top bg-white">
+        <div class="px-1">
           <div class="row py-2">
             <div class="col">
               <div class="btn btn-primary btn-block" @click="onCancelRecruitment">取消招募</div>
@@ -141,7 +141,7 @@ export default {
         });
     },
     editRecruitment() {
-      this.$router.push({ path: '/pages/recruitment/post', query: { id: this.id, mode: 'edit' } })
+      this.$router.push({ path: '/pages/recruitment/post', query: { id: this.id, mode: 'edit' }, reLaunch: true })
     },
     refresh() {
       Promise.all([
