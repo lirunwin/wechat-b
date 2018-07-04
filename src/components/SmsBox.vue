@@ -60,32 +60,35 @@ export default {
     },
     getCode() {
       console.log(this.tel);
-      if (!constant.regExp.phone.test(this.tel)) {
-        util.showToast('电话号码有误');
-        return;
-      }
+      setTimeout(() => {
+        if (!constant.regExp.phone.test(this.tel)) {
+          util.showToast('电话号码有误');
+          return;
+        }
 
-      if (!this.disableSms) {
-        let timer = null;
-        this.getSmsCode({
-          tel: this.tel,
-          type: this.smsType
-        }).catch(() => {
-          clearInterval(timer);
+        if (!this.disableSms) {
+          let timer = null;
+          this.getSmsCode({
+              tel: this.tel,
+              type: this.smsType
+            })
+            .catch(() => {
+              clearInterval(timer);
+              this.time = this.countDown;
+              this.disableSms = false;
+            })
+          this.disableSms = true;
           this.time = this.countDown;
-          this.disableSms = false;
-        })
-        this.disableSms = true;
-        this.time = this.countDown;
-        timer = setInterval(() => {
-          this.time--;
-          if (this.time === 0) {
-            this.time = this.countDown;
-            this.disableSms = false
-            clearInterval(timer)
-          }
-        }, 1000)
-      }
+          timer = setInterval(() => {
+            this.time--;
+            if (this.time === 0) {
+              this.time = this.countDown;
+              this.disableSms = false
+              clearInterval(timer)
+            }
+          }, 1000)
+        }
+      }, 1000);
     }
   },
 }
