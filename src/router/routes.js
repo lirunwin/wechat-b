@@ -57,5 +57,13 @@ module.exports = [
       navigationBarTitleText: '招聘详情',
       enablePullDownRefresh: true,
     }
+  },
+  {
+    path: '/pages/recruitment/test',
+    name: 'PostRecuitmentDetail',
+    config: {
+      navigationBarTitleText: 'test',
+      enablePullDownRefresh: true,
+    }
   }
 ];

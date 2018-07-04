@@ -21,11 +21,11 @@
         <h5>工作周期</h5>
         <div class="row align-items-center">
           <div class="col">
-            <date-picker placeholder="请选择开始日期" v-model="jobDate.start" :appendZero="false" format="yyyy.MM.dd"></date-picker>
+            <date-picker placeholder="请选择开始日期" v-model="jobDate.start" :defaultValue="defaultJobDate.start" :appendZero="false" format="yyyy.MM.dd"></date-picker>
           </div>
           <div class="col-auto">-</div>
           <div class="col">
-            <date-picker placeholder="请选择结束日期" v-model="jobDate.end" :appendZero="false" format="yyyy.MM.dd"></date-picker>
+            <date-picker placeholder="请选择结束日期" v-model="jobDate.end" :defaultValue="defaultJobDate.end" :appendZero="false" format="yyyy.MM.dd"></date-picker>
           </div>
         </div>
       </div>
@@ -33,11 +33,11 @@
         <h5>工作时段</h5>
         <div class="row align-items-center">
           <div class="col">
-            <time-picker placeholder="请选择开始时间" v-model="jobTime.start" :defaultValue="defaultTime.start"></time-picker>
+            <time-picker placeholder="请选择开始时间" v-model="jobTime.start" :defaultValue="defaultJobTime.start"></time-picker>
           </div>
           <div class="col-auto">-</div>
           <div class="col">
-            <time-picker placeholder="请选择结束时间" v-model="jobTime.end" :defaultValue="defaultTime.end"></time-picker>
+            <time-picker placeholder="请选择结束时间" v-model="jobTime.end" :defaultValue="defaultJobTime.end"></time-picker>
           </div>
         </div>
       </div>
@@ -101,7 +101,7 @@
       </div>
       <div class="col-12 mb-1">
         <h5>结束时间</h5>
-        <date-picker placeholder="请输入结束日期" v-model="post.endtime"></date-picker>
+        <date-picker placeholder="请输入结束日期" v-model="post.endtime" :defaultValue="defaultDeadline"></date-picker>
       </div>
     </div>
     <div class="row mx-0 px-1 pt-1 pb-2">
@@ -144,23 +144,19 @@ export default {
     TabBar
   },
   data: () => ({
-    gender: constant.gender,
-    jobNatures: constant.jobNatures,
-    eduList: constant.eduList,
-    wageClearing: constant.wageClearing,
-    wageMode: constant.wageMode,
+    gender: constant.gender.slice(),
+    jobNatures: constant.jobNatures.slice(),
+    eduList: constant.eduList.slice(),
+    wageClearing: constant.wageClearing.slice(),
+    wageMode: constant.wageMode.slice(),
     location: {},
     defaultLocation: {},
     position: {},
-    jobDate: {
-      start: '',
-      end: ''
-    },
-    jobTime: {},
-    defaultTime: {
-      start: '09:00',
-      end: '18:00'
-    },
+    jobDate: { start: '', end: '' },
+    jobTime: { start: '', end: '' },
+    defaultJobTime: { start: '09:00', end: '18:00' },
+    defaultJobDate: {},
+    defaultDeadline: '',
     post: {}
   }),
   computed: {
@@ -217,18 +213,18 @@ export default {
         util.showToast('工资模式：' + constant.NoSalaryPayWay);
         return false;
       }
-      if (!this.post.wagebegin || !this.post.wageend) {
-        util.showToast('工资范围：' + constant.WrongRange);
-        return false;
-      }
-      if (this.post.wagebegin === '' || this.post.wageend === '' || this.post.wagebegin > this.post.wageend) {
+      if (!(this.post.wagebegin >= 0 && this.post.wageend >= 0 && this.post.wagebegin <= this.post.wageend)) {
         util.showToast('工资：' + constant.WrongRange);
         return false;
       }
-      if (!this.post.endtime || this.post.endtime === util.formatTime(new Date())) {
+      if (!this.post.endtime) {
         util.showToast('招聘结束时间：' + constant.WrongDeadline);
         return false;
       }
+      // if (this.post.endtime === util.formatTime(new Date())) {
+      //   util.showToast('招聘结束时间：不能为当天');
+      //   return false;
+      // }
       return true;
     },
     onSubmit() {
@@ -257,49 +253,40 @@ export default {
           this.resetData();
           util.showToast(res.msg || '操作成功');
           setTimeout(() => {
-            this.$router.replace({ path: '/pages/recruitment/index' })
+            this.$router.go();
+            // this.$router.replace({ path: '/pages/recruitment/index' });
           }, 1000)
         });
     },
     resetData() {
-      this.gender = constant.gender,
-        this.jobNatures = constant.jobNatures,
-        this.eduList = constant.eduList,
-        this.wageClearin = constant.wageClearing,
-        this.wageMode = constant.wageMode,
-        this.location = {
-          province: -1,
-          city: -1,
-          county: 1
-        },
-        this.defaultLocation = {
-          province: -1,
-          city: -1,
-          county: -1
-        },
-        this.position = {},
-        this.jobDate = {
-          start: '',
-          end: ''
-        },
-        this.jobTime = {
-          start: '',
-          end: ''
-        },
-        this.defaultTime = {
-          start: '09:00',
-          end: '18:00'
-        },
-        this.post = {}
+      this.gender = constant.gender.slice();
+      this.jobNatures = constant.jobNatures.slice();
+      this.eduList = constant.eduList.slice();
+      this.wageClearin = constant.wageClearing.slice();
+      this.wageMode = constant.wageMode.slice();
+      this.location = { province: -1, city: -1, county: -1 };
+      this.defaultLocation = { province: -1, city: -1, county: -1 };
+      this.position = {};
+      this.defaultJobTime = { start: '09:00', end: '18:00' };
+      this.post.jobPeriod = '09:00 - 18:00';
+      let today = util.formatTime(new Date(), 'yyyy.MM.dd', this.appendZero)
+      this.defaultJobDate = { start: today, end: today };
+      this.post.jobCycle = `${today} - ${today}`;
+      this.defaultDeadline = util.formatTime(new Date(), 'yyyy-MM-dd');
+      this.jobDate = { start: today, end: today };
+      this.jobTime = { start: '09:00', end: '18:00' };
+      this.post.endtime = this.defaultDeadline;
+      this.post.wagemode = '';
+      this.post.wageclearing = '';
+      this.post = {};
     },
-    getDefaultDate() {
+    getDefaultData() {
       if (this.$route.query.mode === 'edit') {
         let id = this.$route.query.id;
         if (!id) return;
         wx.setNavigationBarTitle({
           title: '修改招聘信息'
         })
-        this.resetData();
         this.fetchRecruitmentDetail({ id })
           .then(detail => {
             this.jobNatures = this.jobNatures.map(nature => {
@@ -332,11 +319,20 @@ export default {
               start: jobCycle[0].trim(),
               end: jobCycle[1].trim()
             }
+            this.defaultJobDate = {
+              start: jobCycle[0].trim(),
+              end: jobCycle[1].trim()
+            };
             let jobPeriod = detail.jobPeriod.split('-');
             this.jobTime = {
               start: jobPeriod[0].trim(),
               end: jobPeriod[1].trim()
             }
+            this.defaultJobTime = {
+              start: jobPeriod[0].trim(),
+              end: jobPeriod[1].trim()
+            }
+            console.log('newTome', this.jobTime);
             this.post = detail;
             // console.log(JSON.stringify(detail, null, 2));
           });
@@ -344,7 +340,8 @@ export default {
     }
   },
   onShow() {
-    this.getDefaultDate();
+    this.resetData();
+    this.getDefaultData();
   },
   computed: {
     mode() {

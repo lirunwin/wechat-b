@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="timeChange" mode="time" :value="time" class="py-0 timepicker">
+      <picker @change="timeChange" mode="time" class="py-0 timepicker">
         <div class="row">
           <view class="col pr-0 text-truncate picker-label">
               {{ time }}
@@ -29,13 +29,13 @@ export default {
   data: () => ({
     // now: utils.formatTime(new Date(), "hh:mm"),
     time: '',
-    overwrite: false
   }),
   watch: {
     defaultValue: {
       immediate: true,
       handler(newTime, oldTime) {
-        if (!oldTime && newTime) {
+        console.log({ newTime }, { oldTime }, this.value);
+        if (newTime) {
           this.time = newTime;
           this.$emit('input', newTime);
         }
@@ -45,13 +45,13 @@ export default {
   methods: {
     timeChange(e) {
       let val = this.time = e.target.value;
-      this.overwrite = true;
       this.$emit('input', val);
     },
   },
-  mounted() {
-    // this.time = this.now;
-    // this.$emit('input', this.now);
+  onShow() {
+    // console.log('time:', this.value);
+    // this.time = this.value;
+    // this.$emit('input', this.value);
   }
 }
 </script>

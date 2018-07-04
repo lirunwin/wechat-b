@@ -68,7 +68,8 @@ export default {
       }, 1000);
     },
   },
-  onHide() {
+  onShow() {
+    console.log('hide');
     this.password = {
       newPwd: '',
       oldPwd: ''

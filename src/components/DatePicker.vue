@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import utils from "@/utils/util";
+import util from "@/utils/util";
 export default {
   props: {
     placeholder: {
@@ -31,28 +31,35 @@ export default {
       type: Boolean,
       default: true
     },
-    value: String
+    value: String,
+    defaultValue: String
   },
   data: () => ({
     today: '',
     date: ''
   }),
-  value: {
-    immediate: true,
-    handler(a, b) {
-      console.log('asjdklsajdsa dlsajdlsadjklsajds阿斯利康到家了开始的阿萨德了', a, b);
-    }
+  watch: {
+    defaultValue: {
+      immediate: true,
+      handler(newDate, oldDate) {
+        console.log({ newDate }, { oldDate });
+        if (newDate) {
+          this.date = newDate;
+          this.$emit('input', newDate);
+        }
+      }
+    },
   },
   methods: {
     dateChange(e) {
       console.log(this.value);
       console.log('date changed', e);
-      this.date = utils.formatTime(e.target.value, this.format, this.appendZero);
+      this.date = util.formatTime(e.target.value, this.format, this.appendZero);
       this.$emit('input', this.date);
     },
   },
   mounted() {
-    this.today = utils.formatTime(new Date(), this.format, this.appendZero);
+    this.today = util.formatTime(new Date(), this.format, this.appendZero);
     this.date = this.today;
     this.$emit('input', this.today);
   }
