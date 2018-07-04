@@ -1,21 +1,16 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="timeChange" mode="time" :value="value" class="py-0 timepicker">
+      <picker @change="timeChange" mode="time" :value="time" class="py-0 timepicker">
         <div class="row">
           <view class="col pr-0 text-truncate picker-label">
-              {{ value }}
+              {{ time }}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
           </div>
         </div>
       </picker>
-      <!-- <picker mode="time" :value="time" start="2015-09-01" end="2017-09-01" @change="timeChange">
-    <view class="picker">
-      当前选择: {{time}}
-    </view>
-  </picker> -->
     </div>
   </div>
 </template>
@@ -28,13 +23,25 @@ export default {
       type: String,
       default: '请选择'
     },
-    value: String
+    value: String,
+    defaultValue: String
   },
   data: () => ({
-    now: utils.formatTime(new Date(), "hh:mm"),
+    // now: utils.formatTime(new Date(), "hh:mm"),
     time: '',
     overwrite: false
   }),
+  watch: {
+    defaultValue: {
+      immediate: true,
+      handler(newTime, oldTime) {
+        if (!oldTime && newTime) {
+          this.time = newTime;
+          this.$emit('input', newTime);
+        }
+      }
+    }
+  },
   methods: {
     timeChange(e) {
       let val = this.time = e.target.value;
@@ -43,8 +50,8 @@ export default {
     },
   },
   mounted() {
-    this.time = this.now;
-    this.$emit('input', this.now);
+    // this.time = this.now;
+    // this.$emit('input', this.now);
   }
 }
 </script>

@@ -33,13 +33,13 @@ export default {
     console.log(this.$route.name);
   },
   methods: {
-    goToPost() {
-      if (this.currentTab === 'pagesRecruitmentPost') return;
-      this.$router.replace({ path: '/pages/recruitment/post' })
-    },
     goToRecruitmentIndex() {
       if (this.currentTab === 'pagesRecruitmentIndex') return;
       this.$router.replace({ path: '/pages/recruitment/index' })
+    },
+    goToPost() {
+      if (this.currentTab === 'pagesRecruitmentPost') return;
+      this.$router.push({ path: '/pages/recruitment/post' })
     },
     goToUserCenter() {
       if (this.currentTab === 'pagesUserCenter') return;
@@ -54,8 +54,10 @@ export default {
 .tabbar {
     position: relative;
     padding-top: 46px;
+    z-index: 999;
     .container {
         position: fixed;
+        z-index: 9999;
         padding: 5px 8%;
         width: 100vw;
         left: 0;
@@ -63,6 +65,7 @@ export default {
         font-size: 10px;
         color: $material-color-grey-600;
         border-top: 1px solid $border-color;
+        background: $white;
         .tab-bar-icon {
             width: 22px;
             height: 22px;

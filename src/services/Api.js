@@ -6,7 +6,7 @@ import Fly from 'flyio';
 
 const request = new Fly();
 
-request.config.baseURL = 'https://local.sapi.s-cout.com/zcb-api/';
+request.config.baseURL = constant.baseURL;
 
 request.interceptors.request.use((request) => {
   // if(util.checkLogin)

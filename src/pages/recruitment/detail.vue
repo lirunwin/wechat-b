@@ -62,7 +62,7 @@
             <div class="col">
               <div class="btn btn-primary btn-block" @click="onCancelRecruitment">取消招募</div>
             </div>
-            <div class="col">
+            <div class="col" v-if="recruitmentDetail.jobstatus === '等待审核' || recruitmentDetail.jobstatus === '审核不通过' ">
               <div class="btn btn-primary btn-block active" @click="editRecruitment">修改招募</div>
             </div>
           </div>
@@ -141,7 +141,7 @@ export default {
         });
     },
     editRecruitment() {
-      this.$router.push({ path: '/pages/recruitment/post', query: { id: this.id, mode: 'edit' }, reLaunch: true })
+      this.$router.push({ path: '/pages/recruitment/post', query: { id: this.id, mode: 'edit' } })
     },
     refresh() {
       Promise.all([

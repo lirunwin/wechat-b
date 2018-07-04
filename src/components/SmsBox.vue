@@ -7,7 +7,7 @@
         :value="value"
         @input="updataVal($event.target.value)"
       >
-      <text v-if="unit" class="unit p-1">{{unit}}</text>
+      <text v-if="unit" class="unit p-1">{{ unit }}</text>
     </label>
     <div class="col-auto smsCode btn btn-outline-primary shadow-none border-0 text-dark align-self-stretch d-flex align-items-center justify-content-center"
       v-if="sms !== null"

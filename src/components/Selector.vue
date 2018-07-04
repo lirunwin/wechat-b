@@ -42,18 +42,21 @@ export default {
   }),
   methods: {
     pickerChange(e) {
+      console.log(e);
       let currentIndex = e.target.value;
       this.index = currentIndex;
-      // console.log(1, val);
-      if (this.returnValue !== false) {
-        // console.log(this.items);
-        let val = this.items[currentIndex].value || this.items[currentIndex].id || '';
-        this.$emit('input', val);
-        // console.log(2, this.items[val].value || this.items[val].id);
-      } else {
-        this.$emit('input', currentIndex);
-        // console.log(3, val);
+      if (currentIndex > -1) {
+        if (this.returnValue !== false) {
+          // console.log(this.items);
+          let val = this.items[currentIndex].value || this.items[currentIndex].id || '';
+          this.$emit('input', val);
+          // console.log(2, this.items[val].value || this.items[val].id);
+        } else {
+          this.$emit('input', currentIndex);
+          // console.log(3, val);
+        }
       }
+      // console.log(1, val);      
     }
   },
   watch: {

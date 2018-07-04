@@ -33,11 +33,11 @@
         <h5>工作时段</h5>
         <div class="row align-items-center">
           <div class="col">
-            <time-picker placeholder="请选择开始时间" v-model="jobTime.start"></time-picker>
+            <time-picker placeholder="请选择开始时间" v-model="jobTime.start" :defaultValue="defaultTime.start"></time-picker>
           </div>
           <div class="col-auto">-</div>
           <div class="col">
-            <time-picker placeholder="请选择结束时间" v-model="jobTime.end"></time-picker>
+            <time-picker placeholder="请选择结束时间" v-model="jobTime.end" :defaultValue="defaultTime.end"></time-picker>
           </div>
         </div>
       </div>
@@ -156,19 +156,14 @@ export default {
       start: '',
       end: ''
     },
-    jobTime: {
-      start: '',
-      end: ''
+    jobTime: {},
+    defaultTime: {
+      start: '09:00',
+      end: '18:00'
     },
     post: {}
   }),
   computed: {
-    jobCycle() {
-      return `${this.jobDate.start} - ${this.jobDate.end}`
-    },
-    jobPeriod() {
-      return `${this.jobTime.start} - ${this.jobTime.end}`
-    },
     ...mapGetters(['recruitmentsDetails'])
   },
   methods: {
@@ -182,10 +177,10 @@ export default {
         util.showToast('职位类型：' + constant.NoPosition);
         return false;
       }
-      if (!this.post.jobnature) {
-        util.showToast('工作性质：' + constant.NoJobNature);
-        return false;
-      }
+      // if (!this.post.jobnature) {
+      //   util.showToast('工作性质：' + constant.NoJobNature);
+      //   return false;
+      // }
       if (!this.post.peoplenumber) {
         util.showToast('招聘人数：' + constant.NoRecruitNum);
         return false;
@@ -198,10 +193,10 @@ export default {
       //   util.showToast('工作时段：' + constant.WrongRange);
       //   return false;
       // }
-      if (!this.post.education) {
-        util.showToast('招聘人数：' + constant.NoEduDegree);
-        return false;
-      }
+      // if (!this.post.education) {
+      //   util.showToast('学历要求：' + constant.NoEduDegree);
+      //   return false;
+      // }
       if (!this.location.county || !this.post.address) {
         util.showToast('工作地址：' + constant.WrongAddress);
         return false;
@@ -237,11 +232,12 @@ export default {
       return true;
     },
     onSubmit() {
+      console.log(this.post);
       if (!this.validate()) return;
       this.post.positionParentId = this.position.positionParentId;
       this.post.positionid = this.position.positionid;
-      this.post.jobCycle = this.jobCycle;
-      this.post.jobPeriod = this.jobPeriod;
+      this.post.jobPeriod = `${this.jobTime.start} - ${this.jobTime.end}`;
+      this.post.jobCycle = `${this.jobDate.start} - ${this.jobDate.end}`;
       this.post.provinceid = this.location.province;
       this.post.cityid = this.location.city;
       this.post.countyid = this.location.county;
@@ -249,6 +245,7 @@ export default {
       this.post.wagegrant = 'SELF';
       this.post.commissionunit = '单';
       this.post.jobnature = "PARTTIME";
+
       if (this.post.jobsex === 'NONE') {
         delete this.post.jobsex
       }
@@ -257,9 +254,10 @@ export default {
       }
       this.saveRecruitment(this.post)
         .then(res => {
+          this.resetData();
           util.showToast(res.msg || '操作成功');
           setTimeout(() => {
-            this.$router.push({ path: '/pages/recruitment/index' })
+            this.$router.replace({ path: '/pages/recruitment/index' })
           }, 1000)
         });
     },
@@ -270,9 +268,9 @@ export default {
         this.wageClearin = constant.wageClearing,
         this.wageMode = constant.wageMode,
         this.location = {
-          province: 0,
-          city: 0,
-          county: 0
+          province: -1,
+          city: -1,
+          county: 1
         },
         this.defaultLocation = {
           province: -1,
@@ -288,22 +286,22 @@ export default {
           start: '',
           end: ''
         },
+        this.defaultTime = {
+          start: '09:00',
+          end: '18:00'
+        },
         this.post = {}
     },
     getDefaultDate() {
-      this.resetData();
       if (this.$route.query.mode === 'edit') {
-        console.log('虽然我来了,但是我还是有数据:' + this.$route.query.mode);
+        let id = this.$route.query.id;
+        if (!id) return;
         wx.setNavigationBarTitle({
           title: '修改招聘信息'
         })
-        let id = this.$route.query.id;
-        console.log(id);
-        if (!id) return;
+        this.resetData();
         this.fetchRecruitmentDetail({ id })
           .then(detail => {
-            // let detail = this.recruitmentsDetails.find(detail => detail.id = id);
-            // console.log({ detail });
             this.jobNatures = this.jobNatures.map(nature => {
               if (nature.value === detail.jobnature || nature.name === detail.jobnature) {
                 nature.checked = true

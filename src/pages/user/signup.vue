@@ -88,7 +88,7 @@
                 <h5>公司简介</h5>
                 <div class="row">
                   <div class="col px-0">
-                    <textarea placeholder="公司简介" v-model.lazy="company.introduce"></textarea>
+                    <textarea placeholder="公司简介" v-model="company.introduce"></textarea>
                   </div>
                 </div>
               </div>
@@ -157,24 +157,31 @@ export default {
           return;
         }
         this.signUp({
-          tel: this.user.tel, //手机号
-          password: this.user.password, //密码
-          veryCode: this.user.veryCode, //手机验证码
-        });
+            tel: this.user.tel, //手机号
+            password: this.user.password, //密码
+            veryCode: this.user.veryCode, //手机验证码
+          })
+          .then(res => {
+            this.$store.commit('logedIn');
+            wx.setStorageSync(constant.userKeyName, res.data || res);
+            this.$router.replace({ path: '/pages/user/signup', query: { step: 2 } });
+          });
       }
     },
     onSaveCompany() {
-      if (this.checkCompany) {
-        this.company.provinceid = this.location.province;
-        this.company.cityid = this.location.city;
-        this.company.countyid = this.location.county;
-        this.updateUserInfo(this.company)
-          .then(res => {
-            util.showToast('操作成功');
-            setTimeout(() => {
-              this.$router.replace({ path: '/pages/recruitment/index' })
-            }, 2000)
-          });
+      if (this.checkCompany()) {
+        setTimeout(() => {
+          this.company.provinceid = this.location.province;
+          this.company.cityid = this.location.city;
+          this.company.countyid = this.location.county;
+          this.updateUserInfo(this.company)
+            .then(res => {
+              util.showToast('操作成功');
+              setTimeout(() => {
+                this.$router.replace({ path: '/pages/recruitment/index' })
+              }, 2000)
+            });
+        }, 1000)
       }
     },
     checkCompany() {
@@ -182,10 +189,10 @@ export default {
         util.showToast('公司名不能为空');
         return false;
       }
-      if (!this.company.comemial) {
-        util.showToast('公司E-mail不能为空');
-        return false;
-      }
+      // if (!this.company.comemial) {
+      //   util.showToast('公司E-mail不能为空');
+      //   return false;
+      // }
       if (!this.company.contactsname) {
         util.showToast('公司联系人不能为空');
         return false;
@@ -194,14 +201,14 @@ export default {
         util.showToast('公司联系人电话不能为空');
         return false;
       }
-      if (!this.location.count || !this.company.address) {
+      if (!this.location.county || !this.company.address) {
         util.showToast('详细地址有误');
         return false;
       }
-      if (!this.company.officephone) {
-        util.showToast('公司电话不能为空');
-        return false;
-      }
+      // if (!this.company.officephone) {
+      //   util.showToast('公司电话不能为空');
+      //   return false;
+      // }
       if (!this.company.businesslicensefile) {
         util.showToast('请上传公司营业执照');
         return false;
@@ -227,8 +234,9 @@ export default {
   },
   mounted() {
     // console.log(this.$route);
-    let step = +this.$route.query.step || 1
-    if (step === 2) {
+    let step = +this.$route.query.step || 1;
+    let mode = +this.$route.query.mode;
+    if (step === 2 && mode === 'edit') {
       this.getUserInfo()
         .then(res => {
           delete res.lastupdatetime;

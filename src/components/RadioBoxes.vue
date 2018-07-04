@@ -2,7 +2,7 @@
   <div class="radio-boxes">
       <radio-group class="radio-group" @change="radioChange">
         <label v-for="(item, index) in items" :key="index" v-if="!item.disable">
-          <radio :value="item.value" :checked="item.checked" color="transparent"/>{{item.name}}
+          <radio :value="item.value" :checked="item.checked" color="transparent"/><label class="size-1">{{item.name}}</label>
         </label>
       </radio-group>
   </div>

@@ -17,11 +17,7 @@ const mutations = {
 };
 const actions = {
   signUp(context, payload) {
-    return UserService.signUp(payload).then((res) => {
-      // context.commit('', positions);
-      console.log(res);
-      return res;
-    });
+    return UserService.signUp(payload).then(res => res);
   },
   signIn(context, payload) {
     return UserService.signIn(payload).then((res) => {

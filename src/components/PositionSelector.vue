@@ -46,6 +46,10 @@ export default {
       if (!oldValue.positionParentId) {
         this.pid = newValue.positionParentId;
         this.initCid = newValue.positionid;
+      } else if (!newValue.positionParentId) {
+        this.pid = 0;
+        this.cid = 0;
+        this.initCid = null;
       }
     },
     pid: function (newPid) {

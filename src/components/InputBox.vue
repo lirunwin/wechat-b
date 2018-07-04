@@ -11,8 +11,7 @@
     </label>
     <div class="col-auto smsCode btn btn-outline-primary shadow-none border-0 text-dark align-self-stretch d-flex align-items-center justify-content-center"
       v-if="sms !== null"
-      @click="getCode"
-      >
+      @click="getCode">
       <span>获取验证码{{time != countDown && time ?  time : '' }}</span>
     </div>
   </div>

@@ -41,6 +41,7 @@
       </div>
     </div>
     <div class="row">
+      <div class="version text-muted size-1">v0.0.8</div>
       <div class="col-12 signin-bg"></div>
     </div>
   </div>
@@ -89,7 +90,7 @@ export default {
           if (res.msg === 'WSXX') {
             this.$router.replace({ path: '/pages/user/signup', query: { step: 2 } })
           } else {
-            this.$router.push({ path: '/pages/recruitment/index' })
+            this.$router.replace({ path: '/pages/recruitment/index' })
           }
         })
     },
@@ -123,6 +124,13 @@ export default {
     .signin-btn {
         background: url("~@/assets/img/signin_btn_bg.png");
         background-size: cover;
+    }
+    .version {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        padding-left: 3px;
     }
 }
 </style>

@@ -1,21 +1,16 @@
 <template lang="html">
   <div class="row selector _input-label">
     <div class='col selector-text pr-0'>
-      <picker @change="dateChange" :start="today" mode="date" :value="value || date" class="py-0 datepicker">
+      <picker @change="dateChange" :start="today" mode="date" class="py-0 datepicker">
         <div class="row">
           <view class="col pr-0 picker-label text-truncate">
-              {{value || date}}
+              {{ date }}
           </view>
           <div class="col-auto py-1 pr-2 pl-0">
             <div class="caret"></div>
           </div>
         </div>
       </picker>
-      <!-- <picker mode="date" :value="date" start="2015-09-01" end="2017-09-01" @change="dateChange">
-    <view class="picker">
-      当前选择: {{date}}
-    </view>
-  </picker> -->
     </div>
   </div>
 </template>
@@ -42,11 +37,18 @@ export default {
     today: '',
     date: ''
   }),
+  value: {
+    immediate: true,
+    handler(a, b) {
+      console.log('asjdklsajdsa dlsajdlsadjklsajds阿斯利康到家了开始的阿萨德了', a, b);
+    }
+  },
   methods: {
     dateChange(e) {
-      let val = this.date = utils.formatTime(e.target.value, this.format, this.appendZero);
-      console.log(val);
-      this.$emit('input', val);
+      console.log(this.value);
+      console.log('date changed', e);
+      this.date = utils.formatTime(e.target.value, this.format, this.appendZero);
+      this.$emit('input', this.date);
     },
   },
   mounted() {
