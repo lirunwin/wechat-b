@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="version text-muted size-1">v0.0.9</div>
+      <div class="version text-muted size-1">v0.1.0</div>
       <div class="col-12 signin-bg"></div>
     </div>
   </div>
@@ -103,7 +103,8 @@ export default {
     switchSignInWay() {
       this.user.loginType === 'PASSWORD' ? this.user.loginType = 'TELCODE' : this.user.loginType = 'PASSWORD';
     }
-  }
+  },  
+  onShareAppMessage () {}
 }
 </script>
 

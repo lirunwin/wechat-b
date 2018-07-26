@@ -347,7 +347,8 @@ export default {
     mode() {
       return this.$route.query.mode;
     }
-  }
+  },  
+  onShareAppMessage () {}
 };
 </script>
 

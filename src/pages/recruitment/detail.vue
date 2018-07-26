@@ -158,7 +158,8 @@ export default {
   },
   onReachBottom() {
     // this.loadMore();
-  }
+  },  
+  onShareAppMessage () {}
 }
 </script>
 

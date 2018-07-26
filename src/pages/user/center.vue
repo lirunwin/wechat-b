@@ -62,7 +62,8 @@ export default {
   },
   mounted() {
     this.getUserInfo()
-  }
+  },
+  onShareAppMessage () {}
 }
 </script>
 

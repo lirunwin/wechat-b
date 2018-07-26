@@ -251,7 +251,8 @@ export default {
         })
     }
     this.step = step;
-  }
+  },  
+  onShareAppMessage () {}
 }
 </script>
 
